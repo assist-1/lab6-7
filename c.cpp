@@ -13,7 +13,7 @@ std::ifstream fin;
 std::ofstream fout;
 class interface { 
 public:
-    void virtual generator(char sex, int year, int month, int day) = 0;
+    virtual void generator(char sex, int year, int month, int day) = 0;
 };
 
 
@@ -25,9 +25,9 @@ public:
         print(); 
     }
 protected:
-    void virtual gener_base() = 0;
-    void virtual generate(char s, int y, int m, int d) = 0;
-    void virtual print() { cout << "template_pattern_generator is working" << endl; }
+    virtual void gener_base() = 0;
+    virtual void generate(char s, int y, int m, int d) = 0;
+    virtual void print() { cout << "template_pattern_generator is working" << endl; }
 };
 
 
