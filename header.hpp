@@ -22,7 +22,7 @@ struct Interface {
 };
 
 struct studentID : public Interface {
-    std::vector<std::string> parametrs;
+    std::vector <std::string> parametrs;
 
     studentID() {
         parametrs = {"S", "YYYY", "MM", "DD"};
@@ -34,6 +34,7 @@ struct MIEM_ID : public studentID {
     MIEM_ID() : studentID() {
         parametrs.push_back("NNNNN");
     }
+
 
     std::string generate(bool sex, size_t year, size_t month, size_t day) override {
         std::string result = "";
@@ -110,10 +111,11 @@ struct Generator {
         }
         return nullptr;
     }
+
 };
 
-void read(std::vector<std::string> &studaki_MIEM, std::vector<std::string> &studaki_MGTU);
+void read(std::vector <std::string> &studaki_MIEM, std::vector <std::string> &studaki_MGTU);
 
-void read(std::vector<std::string> &studaki_MIEM, std::vector<std::string> &studaki_MGTU, char *name);
+void read(std::vector <std::string> &studaki_MIEM, std::vector <std::string> &studaki_MGTU, char *name);
 
 #endif //LABA_PL_6_7_HEADER_HPP

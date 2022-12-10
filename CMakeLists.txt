@@ -1,6 +1,12 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.16)
 project(laba_PL_6_7)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(laba_PL_6_7 main.cpp header.hpp function.cpp)
+enable_testing()
+
+add_library(header.hpp function.cpp header.hpp)
+
+add_subdirectory(googletests)
+
+add_executable(main main.cpp header.hpp function.cpp)

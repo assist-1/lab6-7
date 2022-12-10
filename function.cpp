@@ -1,11 +1,12 @@
 #include "header.hpp"
 
 size_t RandomNumber(size_t min, size_t max) {
+    std::srand(static_cast<size_t>(std::time(nullptr)));
     static constexpr double devider{1.0 / (RAND_MAX + 1.0)};
     return min + static_cast<size_t>((max - min + 1) * (std::rand() * devider));
 }
 
-void read(std::vector<std::string> &studaki_MIEM, std::vector<std::string> &studaki_MGTU) {
+void read(std::vector <std::string> &studaki_MIEM, std::vector <std::string> &studaki_MGTU) {
     Generator templateGenerator;
     std::string result;
     std::string stroke;
@@ -45,7 +46,7 @@ void read(std::vector<std::string> &studaki_MIEM, std::vector<std::string> &stud
     }
 }
 
-void read(std::vector<std::string> &studaki_MIEM, std::vector<std::string> &studaki_MGTU, char *name) {
+void read(std::vector <std::string> &studaki_MIEM, std::vector <std::string> &studaki_MGTU, char *name) {
     std::ifstream file(name);
     std::string stroke;
     Generator templateGenerator;

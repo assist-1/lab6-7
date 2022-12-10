@@ -3,9 +3,8 @@
 
 
 int main(int argc, char **argv) {
-    std::srand(static_cast<size_t>(std::time(nullptr)));
-    std::vector<std::string> studaki_MIEM = {};
-    std::vector<std::string> studaki_MGTU = {};
+    std::vector <std::string> studaki_MIEM = {};
+    std::vector <std::string> studaki_MGTU = {};
     if (argc == 1) {
         std::cout << "Enter a value in the format \"gender(M/W)_year_month_day_universe\", where '_' is a space.\n";
         read(studaki_MIEM, studaki_MGTU);
