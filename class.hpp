@@ -10,7 +10,7 @@
 
 class Student_Ticket_Generator {
 public:
-    virtual int Summurise(const std::string &str) final {
+    int Summurise(const std::string &str)  {
         int sum = 0;
         for (size_t i = 0; i < str.size(); ++i) {
             char c = str[i];
@@ -19,7 +19,7 @@ public:
         return sum;
     }
 
-    virtual int Random(int min, int max) final {
+    int Random(int min, int max) {
         return min + std::rand() % (max - min);
     }
 
@@ -34,7 +34,7 @@ public:
 
 class MGTU : public virtual Student_Ticket_Generator {
 public:
-    virtual int
+    int
     Generate_random_number(std::string &year, std::string &month, std::string &day,
                            std::map <std::string, std::vector<int>> &randomNumbers) override {
         std::string s = (year) + (month) + (day);
@@ -54,7 +54,7 @@ public:
         return number;
     }
 
-    virtual std::string
+    std::string
     generate(std::string &sex, std::string &year, std::string &month, std::string &day,
              std::map <std::string, std::vector<int>> &randomNumbers) override {
         std::string gender;
@@ -67,8 +67,8 @@ public:
         std::string s =
                 gender + (year) + (month) + (day) + std::to_string(number);
         int Sum = Summurise(s);
-        for (size_t i = 0; i < 10; ++i) {
-            if ((Sum + i*14) % 11 == 0) {
+        for (int i = 0; i < 10; ++i) {
+            if ((Sum + i) % 11 == 0) {
                 s = s + std::to_string(i);
                 break;
             }
@@ -79,7 +79,7 @@ public:
 
 class MIEM : public virtual Student_Ticket_Generator {
 public:
-    virtual int
+    int
     Generate_random_number(std::string &year, std::string &month, std::string &day,
                            std::map <std::string, std::vector<int>> &randomNumbers) override {
         std::string s = (year) + (month) + (day);
@@ -99,7 +99,7 @@ public:
         return number;
     }
 
-    virtual std::string
+    std::string
     generate(std::string &sex, std::string &year, std::string &month, std::string &day,
              std::map <std::string, std::vector<int>> &randomNumbers) override {
         std::string gender;
@@ -112,8 +112,8 @@ public:
         std::string s =
                 gender + (year) + (month) + (day) + std::to_string(number);
         int Sum = Summurise(s);
-        for (size_t i = 0; i < 10; ++i) {
-            if ((Sum + i*15) % 11 == 0) {
+        for (int i = 0; i < 10; ++i) {
+            if ((Sum + i) % 11 == 0) {
                 s = s + std::to_string(i);
                 break;
             }
@@ -122,6 +122,18 @@ public:
     }
 };
 
+struct Generator {
+    Student_Ticket_Generator* generator(std::string university) {
+        if (university == "MGTU") {
+            MGTU *a = new MGTU;
+            return a;
+        } else if (university == "MIEM") {
+            MIEM *a = new MIEM;
+            return a;
+        }
+        return nullptr;
+    }
+};
 void CorrectInformation(std::string &year, std::string &month, std::string &day);
 
 bool

@@ -7,6 +7,7 @@ int main(int argc, char **argv) {
     }
     std::string university, sex, year, month, day;
     if (strcmp(argv[1], "--tofile") == 0 && strcmp(argv[2], "--fromfile") == -1 && argc < 4) {
+        Generator templateGenerator;
         std::map <std::string, std::vector<int>> randomNumbers1;
         std::map <std::string, std::vector<int>> randomNumbers2;
         if (argc == 2) {
@@ -18,13 +19,9 @@ int main(int argc, char **argv) {
                 }
                 CorrectInformation(year, month, day);
                 if (university == "MIEM") {
-                    MIEM *a = new MIEM;
-                    out << a->generate(sex, year, month, day, randomNumbers1) << std::endl;
-                    delete a;
+                    out << templateGenerator.generator(university)->generate(sex, year, month, day, randomNumbers1) << std::endl;
                 } else if (university == "MGTU") {
-                    MGTU *b = new MGTU;
-                    out << b->generate(sex, year, month, day, randomNumbers2) << std::endl;
-                    delete b;
+                    out << templateGenerator.generator(university)->generate(sex, year, month, day, randomNumbers2) << std::endl;
                 }
             }
         } else {
@@ -36,18 +33,15 @@ int main(int argc, char **argv) {
                 }
                 CorrectInformation(year, month, day);
                 if (university == "MIEM") {
-                    MIEM *a = new MIEM;
-                    out << a->generate(sex, year, month, day, randomNumbers1) << std::endl;
-                    delete a;
+                    out << templateGenerator.generator(university)->generate(sex, year, month, day, randomNumbers1) << std::endl;
                 } else if (university == "MGTU") {
-                    MGTU *b = new MGTU;
-                    out << b->generate(sex, year, month, day, randomNumbers2) << std::endl;
-                    delete b;
+                    out << templateGenerator.generator(university)->generate(sex, year, month, day, randomNumbers2) << std::endl;
                 }
             }
         }
     }
     if (strcmp(argv[1], "--fromfile") == 0 && argc == 3) {
+        Generator templateGenerator;
         std::map <std::string, std::vector<int>> randomNumbers1;
         std::map <std::string, std::vector<int>> randomNumbers2;
         std::ifstream in(argv[2]);
@@ -58,18 +52,15 @@ int main(int argc, char **argv) {
             }
             CorrectInformation(year, month, day);
             if (university == "MIEM") {
-                MIEM *a = new MIEM;
-                std::cout << a->generate(sex, year, month, day, randomNumbers1) << std::endl;
-                delete a;
+                std::cout << templateGenerator.generator(university)->generate(sex, year, month, day, randomNumbers1) << std::endl;
             } else if (university == "MGTU") {
-                MGTU *b = new MGTU;
-                std::cout << b->generate(sex, year, month, day, randomNumbers2) << std::endl;
-                delete b;
+                std::cout << templateGenerator.generator(university)->generate(sex, year, month, day, randomNumbers2) << std::endl;
             }
         }
     }
     if (argc >= 3 && ((strcmp(argv[1], "--fromfile") == 0 && strcmp(argv[2], "--tofile") == 0) ||
                       (strcmp(argv[2], "--fromfile") == 0 && strcmp(argv[1], "--tofile") == 0))) {
+        Generator templateGenerator;
         std::map <std::string, std::vector<int>> randomNumbers1;
         std::map <std::string, std::vector<int>> randomNumbers2;
         std::vector <std::string> vec;
@@ -82,13 +73,9 @@ int main(int argc, char **argv) {
                 }
                 CorrectInformation(year, month, day);
                 if (university == "MIEM") {
-                    MIEM *a = new MIEM;
-                    vec.push_back(a->generate(sex, year, month, day, randomNumbers1));
-                    delete a;
+                   vec.push_back(templateGenerator.generator(university)->generate(sex, year, month, day, randomNumbers1));
                 } else if (university == "MGTU") {
-                    MGTU *b = new MGTU;
-                    vec.push_back(b->generate(sex, year, month, day, randomNumbers2));
-                    delete b;
+                    vec.push_back(templateGenerator.generator(university)->generate(sex, year, month, day, randomNumbers2));
                 }
             }
         } else {
@@ -100,13 +87,9 @@ int main(int argc, char **argv) {
                 }
                 CorrectInformation(year, month, day);
                 if (university == "MIEM") {
-                    MIEM *a = new MIEM;
-                    vec.push_back(a->generate(sex, year, month, day, randomNumbers1));
-                    delete a;
+                    vec.push_back(templateGenerator.generator(university)->generate(sex, year, month, day, randomNumbers1));
                 } else if (university == "MGTU") {
-                    MGTU *b = new MGTU;
-                    vec.push_back(b->generate(sex, year, month, day, randomNumbers2));
-                    delete b;
+                    vec.push_back(templateGenerator.generator(university)->generate(sex, year, month, day, randomNumbers2));
                 }
             }
         }
