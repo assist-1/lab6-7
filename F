@@ -1,0 +1,4 @@
+MGTU man 2022 12 08
+MGTU woman 1054 3 2
+MIEM man 999 10 09
+MIEM woman 2000 12 30
