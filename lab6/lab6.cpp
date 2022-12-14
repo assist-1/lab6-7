@@ -210,5 +210,7 @@ int main(int argc, char** argv){
 	mgtuObject.generateStudentCard("woman","1984","10","07");
 	std::cout << mgtuObject.data << std::endl;
 	*/
+	delete[] miemObjects;
+	delete[] mgtuObjects;
 	return 0;
 }
