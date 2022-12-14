@@ -7,7 +7,7 @@ myProg:lab6.o
 	$(CC) lab6.o -o myProg.exe
 
 lab6.o: lab6.cpp
-	$(CC) $(CFLAGS) lab6.cpp -o main.o
+	$(CC) $(CFLAGS) lab6.cpp -o lab6.o
 
 clean:
 	del /s *.o
