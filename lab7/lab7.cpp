@@ -11,11 +11,12 @@ class TemplateStudentCard{
 			std::stringstream almostResultTemp;
 			std::string amlostResult;
 			std::string result;
+			SomeMethod1();
 			almostResultTemp << generateSex(sex);
 			std::string birthDate = generateBirthDate(birthYear,birthMonth,birthDay);
 			almostResultTemp << birthDate;
 			almostResultTemp << randomNumber(birthDate);
-			
+			SomeMethod2();
 			std::string almostResult = almostResultTemp.str();
 			almostResultTemp << lastNumberRes(almostResult);
 			result = almostResultTemp.str();
