@@ -7,14 +7,13 @@
 
 class interface{
 	public:
-		std::string data;
-		virtual void generateStudentCard(std::string sex,std::string birthYear,std::string birthMonth,std::string birthDay )=0;
+		virtual std::string generateStudentCard(std::string sex,std::string birthYear,std::string birthMonth,std::string birthDay )=0;
 		
 };
 
 class miem : public interface{
 	public:
-		void generateStudentCard(std::string sex,std::string birthYear,std::string birthMonth,std::string birthDay ) override final{
+		std::string generateStudentCard(std::string sex,std::string birthYear,std::string birthMonth,std::string birthDay ) override final{
 			std::stringstream res;
 			
 			if(sex.length()==3||sex.length()==5){
@@ -76,13 +75,13 @@ class miem : public interface{
 			}
 			
 			std::string result = res.str();
-			this->data = result;
+			return result;
 		}
 };
 
 class mgtu : public interface{
 	public:
-		void generateStudentCard(std::string sex,std::string birthYear,std::string birthMonth,std::string birthDay ) override final{
+		std::string generateStudentCard(std::string sex,std::string birthYear,std::string birthMonth,std::string birthDay ) override final{
 			std::stringstream res;
 			
 			if(sex.length()==3||sex.length()==5){
@@ -124,34 +123,43 @@ class mgtu : public interface{
 				exit(1);
 			}
 			birthDat = birthDate.str();
+			std::cout <<birthDat<<std::endl;
 			res << birthDat;
 			
 			int randomNumber;
 			srand(std::stoi(birthDat));
-			randomNumber = rand()%(9999-1000+1)+1000;
-			res << std::to_string(randomNumber);
-			
+			randomNumber = (rand()+1000)%10000;
+			res << std::to_string(randomNumber);!
+			//std::string ch = std::to_string(randomNumber);
 			std::string calcC = res.str();
 			int Multi = 0;
 			for(int i=0;i<calcC.length();i++){
 				Multi = Multi + (i+1)*std::stoi(calcC.substr(i,1));
 				
 			}
+			bool check = false;
 			for(int i=0;i<10;i++){
 				if((Multi+i*14)%10==0){
+					check = true;
 					res << std::to_string(i);
+					break;
 				}
 			}
-			
-			std::string result = res.str();
-			this->data = result;
+			if(check){
+				std::string result = res.str();
+				return result;
+			}
+			else {
+				std::cerr << "SOMETHING WENT WRONG WHILE CALCULATING LAST NUMBER." << std::endl;
+				exit(1);
+			}
 		}
 };
 
-void fromFileFunc(miem* miemObjects,mgtu* mgtuObjects,int number){
-	std::ifstream file("fromFileExample.txt"); //Format example: mgtu man 2005 01 07
-	std::string line;
-	int mgtuPos = 0;
+std::string fromFileFunc(miem* miemObjects,mgtu* mgtuObjects,int number){
+	std::ifstream file("fromFileExample.txt"); //Format example: 0123456789
+	std::string line;							//				 mgtu woman 1999 11 21
+	int mgtuPos = 0;							//				 mgtu man 2005 01 07
 	int miemPos = 0;
 	if(file.is_open()){
 		getline(file,line);
@@ -162,16 +170,23 @@ void fromFileFunc(miem* miemObjects,mgtu* mgtuObjects,int number){
 	}
 	
 	if(line.substr(0,4)=="mgtu"){
-		mgtuObjects[mgtuPos].generateStudentCard(line.substr(5,3),line.substr(9,4),line.substr(14,2),line.substr(17,2));
+		if(line.substr(5,3)=="man"){
+			return mgtuObjects[mgtuPos].generateStudentCard(line.substr(5,3),line.substr(9,4),line.substr(14,2),line.substr(17,2));
+		}
+		else return mgtuObjects[mgtuPos].generateStudentCard(line.substr(5,5),line.substr(11,4),line.substr(16,2),line.substr(19,2));
 	}
 	else if(line.substr(0,4)=="miem"){
-		miemObjects[miemPos].generateStudentCard(line.substr(5,3),line.substr(9,4),line.substr(14,2),line.substr(17,2));
+		if(line.substr(5,3)=="man"){
+			return miemObjects[miemPos].generateStudentCard(line.substr(5,3),line.substr(9,4),line.substr(14,2),line.substr(17,2));
+		}
+		else return miemObjects[miemPos].generateStudentCard(line.substr(5,5),line.substr(11,4),line.substr(16,2),line.substr(19,2));
 	}
 	else{
 		std::cerr << "WRONG FROMFILE INPUT" << std::endl;
 		exit(1);
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv){
 	bool toFile = false;
@@ -189,16 +204,14 @@ int main(int argc, char** argv){
 		}
 	}
 	
-	if(fromFile) fromFileFunc(miemObjects,mgtuObjects,number);
+	//if(fromFile) fromFileFunc(miemObjects,mgtuObjects,number);
 	
 	if(toFile&&fromFile==true){
 		std::ofstream file("toFile.txt");
-		file << mgtuObjects[0].data << std::endl;
-		file << miemObjects[0].data << std::endl;
+		file << fromFileFunc(miemObjects,mgtuObjects,number);
 	}
 	if(toFile==false&&fromFile==true){
-		std::cout << mgtuObjects[0].data << std::endl;
-		std::cout << miemObjects[0].data << std::endl;
+		std::cout << fromFileFunc(miemObjects,mgtuObjects,number) << std::endl;
 	}
 	
 	/*
