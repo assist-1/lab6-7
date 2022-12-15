@@ -39,7 +39,7 @@ class miem : public interface{
 				exit(1);
 			}
 			
-			if(birthMonth.length()==2){
+			if(birthMonth.length()==2&&(std::stoi(birthMonth)<=12&&std::stoi(birthMonth)>=1)){
 				birthDate << birthMonth;
 			}
 			else{
@@ -47,7 +47,7 @@ class miem : public interface{
 				exit(1);
 			}
 			
-			if(birthDay.length()==2){
+			if(birthDay.length()==2&&(std::stoi(birthDay)<=31&&std::stoi(birthDay)>=1)){
 				birthDate << birthDay;
 			}
 			else{
@@ -107,7 +107,7 @@ class mgtu : public interface{
 				exit(1);
 			}
 			
-			if(birthMonth.length()==2){
+			if(birthMonth.length()==2&&(std::stoi(birthMonth)<=12&&std::stoi(birthMonth)>=1)){
 				birthDate << birthMonth;
 			}
 			else{
@@ -115,7 +115,7 @@ class mgtu : public interface{
 				exit(1);
 			}
 			
-			if(birthDay.length()==2){
+			if(birthDay.length()==2&&(std::stoi(birthDay)<=31&&std::stoi(birthDay)>=1)){
 				birthDate << birthDay;
 			}
 			else{
@@ -123,16 +123,17 @@ class mgtu : public interface{
 				exit(1);
 			}
 			birthDat = birthDate.str();
-			std::cout <<birthDat<<std::endl;
+			//std::cout <<birthDat<<std::endl;
 			res << birthDat;
 			
 			int randomNumber;
 			srand(std::stoi(birthDat));
 			randomNumber = (rand()+1000)%10000;
-			res << std::to_string(randomNumber);!
+			res << std::to_string(randomNumber);
 			//std::string ch = std::to_string(randomNumber);
 			std::string calcC = res.str();
 			int Multi = 0;
+			/*
 			for(int i=0;i<calcC.length();i++){
 				Multi = Multi + (i+1)*std::stoi(calcC.substr(i,1));
 				
@@ -140,6 +141,17 @@ class mgtu : public interface{
 			bool check = false;
 			for(int i=0;i<10;i++){
 				if((Multi+i*14)%10==0){
+					check = true;
+					res << std::to_string(i);
+					break;
+				}
+			}*/
+			for(int i=calcC.length()-1;i>=1;i--){
+				Multi = Multi + (i+1)*std::stoi(calcC.substr(i,1));
+			}
+			bool check = false;
+			for(int i=0;i<10;i++){
+				if((Multi+i*1)%10==0){
 					check = true;
 					res << std::to_string(i);
 					break;
