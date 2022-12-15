@@ -4,6 +4,7 @@
 #include <sstream>
 #include <cstring>
 #include <fstream>
+#include <random>
 
 class interface{
 	public:
@@ -127,9 +128,15 @@ class mgtu : public interface{
 			res << birthDat;
 			
 			int randomNumber;
+			//std::mt19937 rnd(std::stoi(birthDat));
+			//std::uniform_int_distribution<int> distrib(0,9);
+			//randomNumber = distrib(rnd);
 			srand(std::stoi(birthDat));
 			randomNumber = (rand()+1000)%10000;
 			res << std::to_string(randomNumber);
+			//std::uniform_int_distribution<int> distrib1(10,99);
+			//randomNumber = distrib1(rnd);
+			//res << std::to_string(randomNumber);
 			//std::string ch = std::to_string(randomNumber);
 			std::string calcC = res.str();
 			int Multi = 0;
@@ -146,6 +153,7 @@ class mgtu : public interface{
 					break;
 				}
 			}*/
+			
 			for(int i=calcC.length()-1;i>=1;i--){
 				Multi = Multi + (i+1)*std::stoi(calcC.substr(i,1));
 			}
