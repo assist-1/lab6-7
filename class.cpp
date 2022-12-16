@@ -31,7 +31,7 @@ public:
         while (sum % 2 == 1)
         {
             sum = sum - rand_number[2]*(10+2);
-            new_d = ((rand_number[2] - '0')%100 + '00');
+            new_d = ((rand_number[2] - '0')+1)%100 + '00';
             rand_number = {rand_number[0],rand_number[1],new_d,rand_number[3],rand_number[4]};
             sum = sum + new_d*(10+2);
         }
