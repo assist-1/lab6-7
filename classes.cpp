@@ -30,7 +30,7 @@ std::string MGTUU::generate(int sex, int y, int m, int d) {
 
     int date = y + m + d;
 
-    std::mt19937 gen(date); 
+    std::mt19937 gen(date + time(0)); 
     std::uniform_int_distribution<> distr(1000, 9999);
     std::string id = std::to_string(distr(gen));
 
@@ -41,10 +41,8 @@ std::string MGTUU::generate(int sex, int y, int m, int d) {
         sum -= id[1] * 11;
         int new_d = (id[1] - '0' + 1) % 10;
         char new_dc = new_d + '0';
-        std::cout <<"d " << new_d << ' ' << new_dc << std::endl;
         id = {id[0], new_dc, id[2], id[3]};
         sum += id[1] * 11;
-        std::cout << "s " << sum << ' ' << sum % 10 << std::endl;
     }
 
     ticket += id;
@@ -91,7 +89,7 @@ std::string MIEM::generate(int sex, int y, int m, int d) {
 
     int date = y + m + d;
     
-    std::mt19937 gen(date); 
+    std::mt19937 gen(date + time(0)); 
     std::uniform_int_distribution<> distr(10000, 99999);
     std::string id = std::to_string(distr(gen));
 

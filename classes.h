@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <random>
+#include <time.h>
 
 /**
  * \brief Абстрактный класс. Является суперклассом для классов MIEM и MGTUU.
