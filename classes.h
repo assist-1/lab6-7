@@ -2,9 +2,9 @@
 #define CLASSES
 #include <string>
 
-class Generator {
+class TicketGenerator {
 public:
-
+	virtual std::string generate() = 0;
 };
 
 
