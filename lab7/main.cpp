@@ -66,15 +66,6 @@ int main(int argc, char** argv){
 	std::string sd = template_generator.generator(data[0], data[1], stoi(data[2]), stoi(data[3]), stoi(data[4]))->get_id();
 
 
-	// Student_ID* gen;
-
-	// if(data[0] == "MIEM") gen = new MIEM;
-	// else gen = new MGTUU;
-	// string sd;
-	// if(data[1] == "woman") sd = gen->generate(sex::woman, std::stoi(data[2]), std::stoi(data[3]), std::stoi(data[4]));
-	// else                   sd = gen->generate(sex::  man, std::stoi(data[2]), std::stoi(data[3]), std::stoi(data[4]));
-	
-
 	if(tofile == 2)
 	{
 		std::ofstream out;

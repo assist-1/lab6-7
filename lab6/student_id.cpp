@@ -3,6 +3,7 @@
 #include <string>
 using std::string;
 
+
 string random(int un, int year, int month, int day)
 //un = 1 for miem; 0 for mgttu
 {

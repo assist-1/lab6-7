@@ -5,7 +5,7 @@ string* read(std::istream& in, bool flag_file, string fromfile_name)
 	{
 		if(!in)
 		{
-			std::cerr << "There`s no file named " << fromfile_name << " in directory with project" << std::endl;
+			std::cerr << "There`s no file named \033[95m" << fromfile_name << " \033[97min directory with project" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -31,7 +31,7 @@ string* read(std::istream& in, bool flag_file, string fromfile_name)
 		else if(c == '\n') break;
 		if(c != ' ' && c != '\r' && c!= '\n')
 		{
-			std::cerr << "Oops, you entered excess symbol " << c << std::endl;
+			std::cerr << "Oops, you entered excess symbol \033[95m" << c << "\033[97m" <<std::endl;
 			std::cerr << "You have to enter 5 parametres in file: University, Sex, Year, Month, Day"<< std::endl;
 			std::cerr << "Example: MIEM woman 2002 12 21" << std:: endl;
 			exit(EXIT_FAILURE);
@@ -47,22 +47,22 @@ string* read(std::istream& in, bool flag_file, string fromfile_name)
 	}
 	if(data[1] != "woman" && data[1] != "man")
 	{
-		std::cerr << "You have to enter sex: man or woman. "<< data[1] <<" is no sex." << std::endl;
+		std::cerr << "You have to enter sex: man or woman. \033[95m"<< data[1] <<" \033[97mis no sex." << std::endl;
 		exit(EXIT_FAILURE);
 	}
 	if(std::stoi(data[2]) < 1000 || std::stoi(data[2]) > 9999 )
 	{
-		std::cerr << "Really? Were you born in "<< data[1] << "?" << std::endl;
+		std::cerr << "Really? Were you born in \033[95m"<< data[2] << "\033[97m?" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 	if(std::stoi(data[3]) < 1 || std::stoi(data[3]) > 12 )
 	{
-		std::cerr << "There's no number of month " << data[3] << std::endl;
+		std::cerr << "There's no number of month \033[95m" << data[3] << "\033[97m" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 	if(std::stoi(data[3]) < 1 || std::stoi(data[3]) > 31 )
 	{
-		std::cerr << "There's no number of day " << data[3] << std::endl;
+		std::cerr << "There's no number of day \033[95m" << data[4] << "\033[97m" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 	return data;

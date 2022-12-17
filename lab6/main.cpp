@@ -50,7 +50,7 @@ int main(int argc, char** argv){
 		in.open(fromfile_name);
 		data = read(in, true, fromfile_name);
 		in.close();
-		std::cout << "File " << fromfile_name << " was readen"<< std::endl;
+		std::cout << "File \033[95m" << fromfile_name << " \033[97mwas readen"<< std::endl;
 	}
 	else
 	{
@@ -64,7 +64,7 @@ int main(int argc, char** argv){
 	string sd;
 	if(data[1] == "woman") sd = gen->generate(sex::woman, std::stoi(data[2]), std::stoi(data[3]), std::stoi(data[4]));
 	else                   sd = gen->generate(sex::  man, std::stoi(data[2]), std::stoi(data[3]), std::stoi(data[4]));
-	
+
 
 	if(tofile == 2)
 	{
@@ -72,7 +72,7 @@ int main(int argc, char** argv){
 		out.open(tofile_name, std::ios::out);
 		out << sd;
 		out.close();
-		std::cout << "Answer was written in " << tofile_name << std::endl;
+		std::cout << "Answer was written in \033[95m" << tofile_name << "\033[97m" << std::endl;
 	}
 	else std::cout << sd << std::endl;
 
