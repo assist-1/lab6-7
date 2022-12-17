@@ -24,5 +24,15 @@ public:
 	std::string pass_generate() override;
 }
 
+class PASS_MGTU : public PassTiket {
+public:
+	PASS_MGTU(int sex, int year, int month, int day) {
+		this->sex = sex;
+		this->year = year;
+		this->month = month;
+		this->day = day;
+	}
+	std::string pass_generate() override;
+}
 
 #endif
