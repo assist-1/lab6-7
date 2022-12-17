@@ -20,5 +20,10 @@ int main(int argc, char* argv[])
         {
             ToFile(namefile);
         }
+        else if (!strcmp(argv[1],flags[0]))
+        {
+            FromFile(namefile);
+        }
+
     }
 }

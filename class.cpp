@@ -3,6 +3,7 @@
 #include <string>
 #include <random>
 #include <fstream>
+#include <cstring>
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -225,37 +226,38 @@ void FromFile(char *namefile)
     std::string year_s;
     std::string month_s;
     std::string day_s;
+    const char* stream;
+    file >> stream;
 
-    cin >> name_un;
     if (!(name_un == "MIEM" || name_un == "MGTU"))
     {
         cerr << "Enter MGTU or MIEM university" << endl;
         exit(1);
     }
 
-    cin >> sex;
+
     if (!(sex == "man" || name_un == "woman") )
     {
         cerr << "Enter <man> of <woman>" << endl;
         exit(1);
     }
-    cout << "Enter year of birthday " << endl;
-    cin >> year_s;
+
+
     int year = stoi(year_s);
     if (year < 1900 || year > 2004)
     {
         cerr << "You need enter year in range 1900 to 2004" << endl;
         exit(1);
     }
-    cout << "Enter month of birthday in number " << endl;
-    cin >> month_s;
+
+
     int month = stoi(month_s);
     if (month < 1 || month > 12)
     {
         cerr << "You need enter month in range 1 to 12" << endl;
         exit(1);
     }
-    cin >> day_s;
+
     int day = stoi(day_s);
     if (day < 1 && day > 31)
     {
@@ -267,12 +269,12 @@ void FromFile(char *namefile)
     {
         cout << "Ya gey" << endl;
         MIEM obj(sex,year,month,day);
-        file << obj.generator() << endl;
+        cout << obj.generator() << endl;
     }
     else
     {
         MGTU ob(sex,year,month,day);
-        file << ob.generator() << endl;
+        cout << ob.generator() << endl;
     }
 }
 
