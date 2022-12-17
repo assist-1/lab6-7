@@ -54,3 +54,7 @@ std::string PASS_MGTU::pass_generate() {
     }
     return passticket;
 }
+
+std::string PassGenerator(PassTicket &University) {
+	return University.pass_generate();
+}

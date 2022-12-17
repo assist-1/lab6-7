@@ -2,7 +2,7 @@
 #define CLASSES
 #include <string>
 
-class PassTiket {
+class PassTicket {
 protected:
 	int sex;
 	int year;
