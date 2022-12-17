@@ -2,18 +2,33 @@
 #include <time.h>
 #include <string>
 #include <random>
+#include <fstream>
+using std::cerr;
+using std::cout;
+using std::endl;
+using std::cin;
 class University {
-    protected:
     public:
-    virtual std::string generator(std::string,int,int,int) = 0;
+    virtual std::string generator() = 0;
 };
-class EMGETUU: public University
+class MGTU: public University
 {
     int sum = 0;
     int div = 10;
+    std::string sex;
+    int year;
+    int month;
+    int day;
     std::string ticket = "";
 public:
-    std::string generator(std::string sex, int year,int month, int day) override
+    MGTU(std::string sex,int year, int month, int day)
+    {
+        this->sex = sex;
+        this->year = year;
+        this->month = month;
+        this->day = day;
+    }
+    std::string generator() override
     {
         if (sex == "man")
         {
@@ -57,10 +72,22 @@ class MIEM : public University
 {
     int sum = 0;
     int div = 11;
+    std::string sex;
+    int year;
+    int month;
+    int day;
     std::string ticket = "";
 public:
-    std::string generator(std::string sex,int year, int month, int day) override
+    MIEM(std::string sex,int year, int month, int day)
     {
+        this->sex = sex;
+        this->year = year;
+        this->month = month;
+        this->day = day;
+    }
+    std::string generator() override
+    {
+
         if (sex == "man")
         {
             ticket+=std::to_string(8);
@@ -68,7 +95,7 @@ public:
         }
         if (sex == "woman")
         {
-            ticket==std::to_string(4);
+            ticket+=std::to_string(4);
             sum+=4;
         }
         int date = 10000*year + 100*month + day;
@@ -99,7 +126,153 @@ public:
         return ticket;
     }
 };
-int main()
-{
- return 0;
+void FromMenu(){
+    std::cout << "To output from a file, enter: ./prog --fromfile <name.txt>" << std::endl;
 }
+void ToMenu(){
+    std::cout << "To enter the file, enter: ./prog --tofile <name.txt>" << std::endl;
+}
+void FromAndToMenu(){
+    std::cout << "For reading from one file and out to another file enter: ./nameprog --fromfile --tofile <name1.txt> <name2.txt>" << std::endl;
+}
+void Menu(){
+    std::cout << "Enter as follows:" << std::endl;
+    FromMenu();
+    ToMenu();
+    FromAndToMenu();
+}
+bool IsDigit(char token)
+{
+    if (token >= '0' && token <= '9') return true;
+    else return false;
+}
+void CheckDate(int year,int month,int day)
+{
+    int arr[] = {31,29,31,30,31,30,31,31,30,31,30,31};
+    if (year%4 != 0) arr[1] = 28;
+    if (!(day <= arr[month-1]) )
+    {
+        cerr << "Enter correct date" << endl;
+        exit(1);
+    }
+}
+void ToFile(char *namefile)
+{
+    std::ofstream file(namefile);
+    std::string name_un;
+    std::string sex;
+    std::string year_s;
+    std::string month_s;
+    std::string day_s;
+    cout << "Enter name university" << endl;
+    cin >> name_un;
+    if (!(name_un == "MIEM" || name_un == "MGTU"))
+    {
+        cerr << "Enter MGTU or MIEM university" << endl;
+        exit(1);
+    }
+    cout << "Enter sex" << endl;
+    cin >> sex;
+    if (!(sex == "man" || name_un == "woman") )
+    {
+        cerr << "Enter <man> of <woman>" << endl;
+        exit(1);
+    }
+    cout << "Enter year of birthday " << endl;
+    cin >> year_s;
+    int year = stoi(year_s);
+    if (year < 1900 || year > 2004)
+    {
+        cerr << "You need enter year in range 1900 to 2004" << endl;
+        exit(1);
+    }
+    cout << "Enter month of birthday in number " << endl;
+    cin >> month_s;
+
+    int month = stoi(month_s);
+
+    if (month < 1 || month > 12)
+    {
+        cerr << "You need enter month in range 1 to 12" << endl;
+        exit(1);
+    }
+    cout << "Enter day of birthday " << endl;
+    cin >> day_s;
+    int day = stoi(day_s);
+    if (day < 1 && day > 31)
+    {
+        cerr << "You need enter month in range 1 to 12" << endl;
+        exit(1);
+    }
+    CheckDate(year,month,day);
+    if (name_un == "MIEM")
+    {
+        cout << "Ya gey" << endl;
+        MIEM obj(sex,year,month,day);
+        file << obj.generator() << endl;
+    }
+    else
+    {
+        MGTU ob(sex,year,month,day);
+        file << ob.generator() << endl;
+    }
+}
+void FromFile(char *namefile)
+{
+    std::ifstream file(namefile);
+    std::string name_un;
+    std::string sex;
+    std::string year_s;
+    std::string month_s;
+    std::string day_s;
+
+    cin >> name_un;
+    if (!(name_un == "MIEM" || name_un == "MGTU"))
+    {
+        cerr << "Enter MGTU or MIEM university" << endl;
+        exit(1);
+    }
+
+    cin >> sex;
+    if (!(sex == "man" || name_un == "woman") )
+    {
+        cerr << "Enter <man> of <woman>" << endl;
+        exit(1);
+    }
+    cout << "Enter year of birthday " << endl;
+    cin >> year_s;
+    int year = stoi(year_s);
+    if (year < 1900 || year > 2004)
+    {
+        cerr << "You need enter year in range 1900 to 2004" << endl;
+        exit(1);
+    }
+    cout << "Enter month of birthday in number " << endl;
+    cin >> month_s;
+    int month = stoi(month_s);
+    if (month < 1 || month > 12)
+    {
+        cerr << "You need enter month in range 1 to 12" << endl;
+        exit(1);
+    }
+    cin >> day_s;
+    int day = stoi(day_s);
+    if (day < 1 && day > 31)
+    {
+        cerr << "You need enter month in range 1 to 12" << endl;
+        exit(1);
+    }
+    CheckDate(year,month,day);
+    if (name_un == "MIEM")
+    {
+        cout << "Ya gey" << endl;
+        MIEM obj(sex,year,month,day);
+        file << obj.generator() << endl;
+    }
+    else
+    {
+        MGTU ob(sex,year,month,day);
+        file << ob.generator() << endl;
+    }
+}
+
