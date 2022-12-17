@@ -38,12 +38,6 @@ string id_gen(int sex, int dd, int mm, int yy) {
     return id;
 }
 
-/*University::University(string sex, int dd, int mm, int yy) {
-    this->sex = sex;
-    this->dd = dd;
-    this->mm = mm;
-    this->yy = yy;
-}*/
 
 string MIEM::gen(string sex, int dd, int mm, int yy){
     int sexx = (sex == "man" ? 8 : 4);
