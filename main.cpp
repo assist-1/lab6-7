@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <map>
+#include "uni.h"
 
 using std::cin;
 using std::cout;
@@ -20,6 +21,7 @@ int days(int i, int y) {
 }
 
 int main(int argc, char ** argv) {
+
     const char* from_file = "-1"; //названия файлов для ввода и вывода
     const char* to_file = "-1";
 
@@ -60,17 +62,17 @@ int main(int argc, char ** argv) {
         days_in_months[i] = days(i, 2022);
     }
 
+    string uni, sex;
+    int yy, mm, dd;
+
     if (strcmp(from_file, "-1") != 0) { //из файла
         std::ifstream fin;
         fin.open(from_file);
 
-        string uni, sex;
-        int yy, mm, dd;
-
         fin >> uni >> sex >> yy >> mm >> dd;
         if (IsLeap(yy)) //если в феврале 29 дней
             days_in_months[2] = 29;
-            
+
         if (!((uni == "miem" || uni == "mgtuu") && (sex == "man" || sex == "woman")
         && yy >= 0 && (mm <= 12 || mm >= 1) && (dd >= 0 && dd <= days_in_months[mm]))) {
             std::cerr << "Incorrect format";
@@ -80,21 +82,20 @@ int main(int argc, char ** argv) {
 
     }
     else { //из консоли
-        std::string uni;
         cout << "-----Please enter the university: miem or mgtuu-----\n";
         cin >> uni;
         if (!(uni == "miem" || uni == "mgtuu")) {
             std::cerr << "Incorrect format for the university";
             return EXIT_FAILURE;
         }
-        std::string sex;
+
         cout << "-----Please enter your sex: man or woman-----\n";
         cin >> sex;
         if (!(sex == "man" || sex == "woman")) {
             std::cerr << "Incorrect format for the sex";
             return EXIT_FAILURE;
         }
-        int yy, mm, dd;
+
         cout << "-----Enter the year of your birth-----\n";
         cin >> yy;
         if (yy < 0) {
@@ -112,12 +113,22 @@ int main(int argc, char ** argv) {
         }
 
         cout << "-----Enter the day of your birth-----\n";
-        cin >> yy;
+        cin >> dd;
         if (dd < 0 || dd > days_in_months[mm]) {
             std::cerr << "Incorrect format for the day";
             return EXIT_FAILURE;
         }
     }
+    template_pattern_student_number_generator templateGenerator;
+    std::string SB = templateGenerator.generator(uni)->gen(sex, dd, mm, yy);
     
+    if (strcmp(to_file, "-1") == 0){ //в консоль
+        cout << SB << '\n';
+    }
+    else { //в файл
+        std::ofstream fout;
+        fout.open(to_file);
+        fout << SB << '\n';
+    }
     return 0;
 }
