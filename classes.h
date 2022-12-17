@@ -2,11 +2,16 @@
 #define CLASSES
 #include <string>
 
-class TicketGenerator {
+class PassTiket {
+protected:
+	int sex;
+	int year;
+	int month;
+	int day;
+	std::string passticket = "";
 public:
-	virtual std::string generate() = 0;
+	virtual std::string pass_generate() = 0;
 };
-
 
 
 
