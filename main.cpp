@@ -110,7 +110,7 @@ int main(int argc, char** argv)
         read_cin(0);
         exit(0);
     }
-    else { 
+    else  if (argc == 2){ 
         if (strcmp(argv[1], "--tofile") == 0) { 
             read_cin(1);
             exit(0); 
@@ -120,7 +120,18 @@ int main(int argc, char** argv)
             exit(0);
             
         }
+        
+        
+
+        
          
+    }
+    else if (argc == 3){
+        if (strcmp(argv[1], "--tofile") == 0 && strcmp(argv[2], "--fromfile") == 0 || 
+            strcmp(argv[2], "--tofile") == 0 && strcmp(argv[1], "--fromfile") == 0) { 
+                read_file(1);
+                exit(0); 
+        }
     }
  
 

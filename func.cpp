@@ -236,7 +236,7 @@ int read_file(int flag) {
         } 
         else if(name == "MGTUU") { 
             aboba uri;
-            std::cout << uri.method("MGTUU")->propusk(sex, year, month, day);
+            out << uri.method("MGTUU")->propusk(sex, year, month, day);
             out.close(); 
         } 
         else{
