@@ -4,6 +4,7 @@
 #include <random>
 #include <fstream>
 #include <cstring>
+#include <algorithm>
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -133,14 +134,14 @@ void FromMenu(){
 void ToMenu(){
     std::cout << "To enter the file, enter: ./prog --tofile <name.txt>" << std::endl;
 }
-void FromAndToMenu(){
+void FromToMenu(){
     std::cout << "For reading from one file and out to another file enter: ./nameprog --fromfile --tofile <name1.txt> <name2.txt>" << std::endl;
 }
 void Menu(){
     std::cout << "Enter as follows:" << std::endl;
     FromMenu();
     ToMenu();
-    FromAndToMenu();
+    FromToMenu();
 }
 bool IsDigit(char token)
 {
@@ -217,22 +218,23 @@ void ToFile(char *namefile)
         MGTU ob(sex,year,month,day);
         file << ob.generator() << endl;
     }
+    file.close();
 }
 void FromFile(char *namefile)
 {
     std::ifstream file(namefile);
-    std::string name_un;
-    std::string sex;
-    std::string year_s;
-    std::string month_s;
-    std::string day_s;
-    const char* stream;
-    file >> stream;
-
+    if (!file.is_open()){ cerr << "No found file " << endl; exit(1);}
+    std::string name_un= "";
+    std::string sex = "";
+    std::string year_s = "";
+    std::string month_s = "";
+    std::string day_s = "";
+    file >> name_un >> sex >> year_s >> month_s >> day_s;
+    file.close();
     if (!(name_un == "MIEM" || name_un == "MGTU"))
     {
-        cerr << "Enter MGTU or MIEM university" << endl;
-        exit(1);
+       cerr << "Enter MGTU or MIEM university" << endl;
+       exit(1);
     }
 
 
@@ -267,7 +269,6 @@ void FromFile(char *namefile)
     CheckDate(year,month,day);
     if (name_un == "MIEM")
     {
-        cout << "Ya gey" << endl;
         MIEM obj(sex,year,month,day);
         cout << obj.generator() << endl;
     }
@@ -275,6 +276,65 @@ void FromFile(char *namefile)
     {
         MGTU ob(sex,year,month,day);
         cout << ob.generator() << endl;
+    }
+}
+void FromToFile(char* namefile1,char* namefile2)
+{
+    std::ifstream file1(namefile1);
+    std::ofstream file2(namefile2);
+    if (!file1.is_open()){ cerr << "No found file " << endl; exit(1);}
+    std::string name_un= "";
+    std::string sex = "";
+    std::string year_s = "";
+    std::string month_s = "";
+    std::string day_s = "";
+    file1 >> name_un >> sex >> year_s >> month_s >> day_s;
+    file1.close();
+    if (!(name_un == "MIEM" || name_un == "MGTU"))
+    {
+       cerr << "Enter MGTU or MIEM university" << endl;
+       exit(1);
+    }
+
+
+    if (!(sex == "man" || name_un == "woman") )
+    {
+        cerr << "Enter <man> of <woman>" << endl;
+        exit(1);
+    }
+
+
+    int year = stoi(year_s);
+    if (year < 1900 || year > 2004)
+    {
+        cerr << "You need enter year in range 1900 to 2004" << endl;
+        exit(1);
+    }
+
+
+    int month = stoi(month_s);
+    if (month < 1 || month > 12)
+    {
+        cerr << "You need enter month in range 1 to 12" << endl;
+        exit(1);
+    }
+
+    int day = stoi(day_s);
+    if (day < 1 && day > 31)
+    {
+        cerr << "You need enter month in range 1 to 12" << endl;
+        exit(1);
+    }
+    CheckDate(year,month,day);
+    if (name_un == "MIEM")
+    {
+        MIEM obj(sex,year,month,day);
+        file2 << obj.generator() << endl;
+    }
+    else
+    {
+        MGTU ob(sex,year,month,day);
+        file2 << ob.generator() << endl;
     }
 }
 
