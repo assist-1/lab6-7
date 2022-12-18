@@ -225,6 +225,7 @@ int read_file(int flag) {
         } 
         else{
             std::cout<<"wrong args";
+            return 0;
         }
     }
     else if(flag == 1){
