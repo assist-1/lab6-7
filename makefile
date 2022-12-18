@@ -1,10 +1,9 @@
-out : main.o functions.o
-	g++ main.o functions.o -o out
+out : main.o 
+	g++ main.o  -o out
 
 main.o : main.cpp
 	g++ -c main.cpp -o main.o
-
-functions.o : functions.cpp
-	g++ -c functions.cpp -o functions.o
-clean : 
+clean :
 	rm out *.o
+distclean :
+	rm out *.o test.txt

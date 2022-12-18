@@ -1,22 +1,18 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-#include"functions.h"
 #include <ctime> 
 #include<random>
 class Student_id{
     protected:
     std::string sex;
-    std::string date;
+    int date;
     std::string number;
-    int intid;
-    int intdate;
     std::string id;
     public:
     virtual std::string set_sex(std::string)=0;
-    virtual int set_date(std::string)=0;
-    virtual std::string set_number()=0;
-    virtual std::string set_id(std::string)=0;
+    virtual std::string set_number(int)=0;
+    virtual std::string set_id()=0;
 };
 class MIEM: public Student_id{
     public:
@@ -24,27 +20,20 @@ class MIEM: public Student_id{
         s=="man"?sex="8":sex="4";
         return sex;
     }
-    int set_date(std::string date)override{
-        intdate=std::stoi( date );
-        return intdate;
-    }
-    std::string set_number()override{
-        std::mt19937 gen(intdate + time(0)); 
+    std::string set_number(int d)override{
+        std::mt19937 gen(d + time(0)); 
         std::uniform_int_distribution<> values(10000, 99999);
         number= std::to_string(values(gen));
-        int intnumber=values(gen);
+        date=d;
         return number;
 
     }
-    std::string set_id(std::string date)override{
-        id=sex+date+number;
+    std::string set_id()override{
+        id=sex+std::to_string(date)+number;
         int sum=0;
-        intid=std::stoi(id);
         int i=14;
-        while(intid!=0){
-            sum+=(intid%10)*i;
-            intid/=10;
-            i--;
+        for(int i=0;i<id.length();i++){
+            sum+=(id[i]-'0')*(i+1);
         }
         int c;
         for(int i=0; i<10;i++){
@@ -58,7 +47,7 @@ class MIEM: public Student_id{
             }
         }
         
-        intid=intid*10+c;
+        id+=std::to_string(c);
         return id;
     }
 
@@ -115,46 +104,71 @@ int main(int argc, char **argv){
         std::string uni,sex, day, month, year;
         std::cout<<"Enter the name of the university in capital letters (MGTUU or MIEM)\n";
         std::cin>>uni;
-        // if(uni!="MGTUU"&& uni!="MIEM"){
-        //     std::cout<<"Wrong name\n";
-        //     return EXIT_FAILURE;
-        // }
+        if(uni!="MGTUU"&& uni!="MIEM"){
+            std::cout<<"Wrong name\n";
+            return EXIT_FAILURE;
+        }
         std::cout<<"Enter your sex (man or woman)\n";
             std::cin>>sex;
-            // if(sex!="man"&& uni!="woman"){
-            // std::cout<<"Wrong sex\n";
-            // return EXIT_FAILURE;
-        // }
+            if(sex!="man"&& sex!="woman"){
+            std::cout<<"Wrong sex\n";
+            return EXIT_FAILURE;
+        }
         std::cout<<"Enter your day of birth\n";
         std::cin>>day;
-        // int d;
-        // d=string_to_int(day);
-        // if(d<0 || d>31){
-        //     std::cout<<"Wrong day\n";
-        //     return EXIT_FAILURE;
-        // } 
+        int d;
+        d=std::stoi(day);
+        if(d<0 || d>31){
+            std::cout<<"Wrong day\n";
+            return EXIT_FAILURE;
+        } 
         std::cout<<"Enter your month of birth\n";
         std::cin>>month;
-        // int m;
-        // m=string_to_int(month);
-        //  if(m<0 || m>12){
-        //     std::cout<<"Wrong month\n";
-        //     return EXIT_FAILURE;
-        // } 
+        int m;
+        m=std::stoi(month);
+         if(m<0 || m>12){
+            std::cout<<"Wrong month\n";
+            return EXIT_FAILURE;
+        } 
         std::cout<<"Enter your year of birth\n";
         std::cin>>year;
-        // int y;
-        // y=string_to_int(month);
-        //  if(y<1900 || y>2022){
-        //     std::cout<<"Wrong year\n";
-        //     return EXIT_FAILURE;
-        // } 
-        std::string date=year+month+day;
-        MIEM p;
-            p.set_sex(sex);
-            p.set_date(date);
-            p.set_number();
-            std::cout<<p.set_id(date);
+        int y;
+        y=std::stoi(year);
+         if(y<1900 || y>2022){
+            std::cout<<"Wrong year\n";
+            return EXIT_FAILURE;
+        } 
+        if(testfile){
+            std::ofstream out;
+            out.open("test.txt");
+            if(out.is_open()){
+                std::string str=year+month+day+'\0';
+                int date = std::stoi(str);
+                MIEM p;
+                p.set_sex(sex);
+                p.set_number(date);
+                out<<p.set_id();
+
+            }
+                        
+            out.close();
+            std::cout<<"Answer in file: test.txt"<<std::endl;
+        }
+        else{
+            std::fstream output(name1);
+            fp=fopen(name1,"w");
+            if(output.is_open()){
+                std::string str=year+month+day+'\0';
+                int date = std::stoi(str);
+                MIEM p;
+                p.set_sex(sex);
+                p.set_number(date);
+                output<<p.set_id();                       
+            }
+            output.close();
+            std::cout<<"Answer in file: "<<name1<<std::endl;
+        }
+
     }
 
 }
