@@ -235,7 +235,7 @@ void ToFile(char *namefile)
     CheckDate(year,month,day);
     if (name_un == "MIEM")
     {
-        cout << "Ya gey" << endl;
+
         MIEM obj(sex,year,month,day);
         file << obj.generator() << endl;
     }
