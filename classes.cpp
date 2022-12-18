@@ -207,6 +207,14 @@ void CheckDate() {
 	}
 }
 
+void CompletionToConsole(std::string group[], int num_tickets) {
+	std::cout << "\nRESULT:\n" << std::endl;
+	for(int i = 0; i < num_tickets; i++) {
+		std::cout << i + 1 << ") " << group[i] << std::endl;
+	}
+}
+
+
 
 void GetResultFromConsole() {
 	std::cout << "Enter the number of pass tickets: ";
@@ -236,10 +244,7 @@ void GetResultFromConsole() {
 			unique.insert(temp);
 		}
 	}
-	std::cout << "\nRESULT:\n" << std::endl;
-	for(int i = 0; i < num_tickets; i++) {
-		std::cout << i + 1 << ") " << group[i] << std::endl;
-	}
+	CompletionToConsole(group, num_tickets);
 }
 
 void GetResultFromConsole(const char * nametofile, bool is_name_file) {
