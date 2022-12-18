@@ -3,6 +3,7 @@
 #include<string>
 #include <ctime> 
 #include<random>
+std::string uni,sex, day, month, year;
 class Student_id{
     protected:
     std::string sex;
@@ -31,7 +32,6 @@ class MIEM: public Student_id{
     std::string set_id()override{
         id=sex+std::to_string(date)+number;
         int sum=0;
-        int i=14;
         for(int i=0;i<id.length();i++){
             sum+=(id[i]-'0')*(i+1);
         }
@@ -39,6 +39,43 @@ class MIEM: public Student_id{
         for(int i=0; i<10;i++){
             sum+=i*15;
             if(sum%11==0){
+                c=i;
+                break;
+            }
+            else{
+                sum-=i*15;
+            }
+        }
+        
+        id+=std::to_string(c);
+        return id;
+    }
+
+};
+class MGTUU: public Student_id{
+    public:
+    std::string set_sex(std::string s) override{
+        s=="man"?sex="1":sex="2";
+        return sex;
+    }
+    std::string set_number(int d)override{
+        std::mt19937 gen(d + time(0)); 
+        std::uniform_int_distribution<> values(1000, 9999);
+        number= std::to_string(values(gen));
+        date=d;
+        return number;
+
+    }
+    std::string set_id()override{
+        id=sex+std::to_string(date)+number;
+        int sum=0;
+        for(int i=0;i<id.length();i++){
+            sum+=(id[i]-'0')*(i+1);
+        }
+        int c;
+        for(int i=0; i<10;i++){
+            sum+=i*14;
+            if(sum%10==0){
                 c=i;
                 break;
             }
@@ -101,7 +138,6 @@ int main(int argc, char **argv){
 
 
     if(tofile && !fromfile){
-        std::string uni,sex, day, month, year;
         std::cout<<"Enter the name of the university in capital letters (MGTUU or MIEM)\n";
         std::cin>>uni;
         if(uni!="MGTUU"&& uni!="MIEM"){
@@ -144,10 +180,18 @@ int main(int argc, char **argv){
             if(out.is_open()){
                 std::string str=year+month+day+'\0';
                 int date = std::stoi(str);
+                if (uni=="MIEM"){
                 MIEM p;
                 p.set_sex(sex);
                 p.set_number(date);
                 out<<p.set_id();
+                }
+                else{
+                  MGTUU p;
+                p.set_sex(sex);
+                p.set_number(date);
+                out<<p.set_id();  
+                }
 
             }
                         
@@ -160,16 +204,101 @@ int main(int argc, char **argv){
             if(output.is_open()){
                 std::string str=year+month+day+'\0';
                 int date = std::stoi(str);
+                 if (uni=="MIEM"){
                 MIEM p;
                 p.set_sex(sex);
                 p.set_number(date);
-                output<<p.set_id();                       
+                output<<p.set_id();
+                }
+                else{
+                  MGTUU p;
+                p.set_sex(sex);
+                p.set_number(date);
+                output<<p.set_id();  
+                }                     
             }
             output.close();
             std::cout<<"Answer in file: "<<name1<<std::endl;
         }
 
     }
+    if(fromfile&&!tofile){
+        std::fstream input(name2);
+        fp=fopen(name2,"r");
+        input>>uni>>year>>month>>day;
+        std::string str=year+month+day+'\0';
+        int date = std::stoi(str);
+
+        if (uni=="MIEM"){
+            MIEM p;
+            p.set_sex(sex);
+            p.set_number(date);
+            std::cout<<p.set_id();
+        }
+        else{
+            MGTUU p;
+            p.set_sex(sex);
+            p.set_number(date);
+            std::cout<<p.set_id();  
+        }                  
+            
+    }
+    if(fromfile && tofile){
+        if(testfile){
+            std::ofstream out;
+            out.open("test.txt");
+            std::fstream input(name2);
+            fp=fopen(name2,"r");
+            input>>uni>>year>>month>>day;
+            if(out.is_open()){
+                std::string str=year+month+day+'\0';
+                int date = std::stoi(str);
+                if (uni=="MIEM"){
+                MIEM p;
+                p.set_sex(sex);
+                p.set_number(date);
+                out<<p.set_id();
+                }
+                else{
+                  MGTUU p;
+                p.set_sex(sex);
+                p.set_number(date);
+                out<<p.set_id();  
+                }
+
+            }
+                        
+            out.close();
+            std::cout<<"Answer in file: test.txt"<<std::endl;
+        }
+        else{
+            std::fstream input(name2);
+            fp=fopen(name2,"r");
+            input>>uni>>year>>month>>day;
+             std::fstream output(name1);
+            fp=fopen(name1,"w");
+            if(output.is_open()){
+                std::string str=year+month+day+'\0';
+                int date = std::stoi(str);
+                 if (uni=="MIEM"){
+                MIEM p;
+                p.set_sex(sex);
+                p.set_number(date);
+                output<<p.set_id();
+                }
+                else{
+                  MGTUU p;
+                p.set_sex(sex);
+                p.set_number(date);
+                output<<p.set_id();  
+                }                     
+            }
+            output.close();
+            std::cout<<"Answer in file: "<<name1<<std::endl;
+
+        }
+    }
+    
 
 }
 
