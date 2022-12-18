@@ -7,7 +7,7 @@ class template_pattern_student_number_generator
         std::string generator(int sex, int year, int month, int day) {
             std::string student_number;
             int newsex = this->get_sex(sex);
-            student_number = this->BaseOperation1(student_number, newsex);
+            student_number = this->BaseOperation(newsex);
             student_number += this->get_c(newsex, year, month, day);
 
             return student_number;
@@ -18,11 +18,13 @@ class template_pattern_student_number_generator
         int year;
         int month;
         int day;  
-        std::string BaseOperation1(std::string personal_number, int newsex) {
+        std::string BaseOperation(int newsex) {
+            std::string personal_number;
             personal_number += std::to_string(newsex);
             personal_number += std::to_string(year);
             personal_number += zfill(std::to_string(month), 2);
             personal_number += zfill(std::to_string(day), 2);
+            return personal_number;
         }
 
         std::string zfill(std::string str, int n) {
