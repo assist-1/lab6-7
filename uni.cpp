@@ -4,7 +4,6 @@
 #include <time.h>
 
 using std::string;
-
 string random_miem(int date_of_birth) {
     std::mt19937 gen(date_of_birth + time(0)); 
     std::uniform_int_distribution<> values(10000, 99999);
@@ -16,6 +15,7 @@ string random_mgtuu(int date_of_birth) {
     std::uniform_int_distribution<> values(1000, 9999);
     return std::to_string(values(gen));
 }
+
 
 string id_gen(int sex, int dd, int mm, int yy) {
     string id = "111111111";
@@ -49,7 +49,7 @@ string MIEM::gen(string sex, int dd, int mm, int yy){
     }
     int i = 0;
     for (; i <= 9; ++i) {
-        if ((sum + 14 * i) % 11 == 0){break;}
+        if ((sum + 15 * i) % 11 == 0){break;}
     }
     id += std::to_string(i);
 

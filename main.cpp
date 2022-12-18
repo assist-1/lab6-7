@@ -22,19 +22,19 @@ int days(int i, int y) {
 
 int main(int argc, char ** argv) {
 
-    const char* from_file = "-1"; //названия файлов для ввода и вывода
-    const char* to_file = "-1";
+    const char* from_file = "-1"; //> названия файлов для ввода и вывода
+    const char* to_file = "-1"; //> названия файлов для ввода и вывода
 
-    if (argc % 2 == 0 || argc > 5) { //если четное число аргументов, или их больше, чем возможное число
+    if (argc % 2 == 0 || argc > 5) { //> если четное число аргументов, или их больше, чем возможное число
         std::cerr << "Incorrect format for flags";
         return EXIT_FAILURE;
     }
     else if (argc == 3) {
-        if (std::strcmp(argv[1], "--fromfile") == 0){ //если флаг чтения из файла
+        if (std::strcmp(argv[1], "--fromfile") == 0){
             from_file = argv[2];
         }
         else if (std::strcmp(argv[1], "--tofile") == 0){
-            to_file = argv[2]; //если флаг вывода в файл
+            to_file = argv[2];
         }
         else {
             std::cerr << "Incorrect format for flags";
@@ -42,7 +42,6 @@ int main(int argc, char ** argv) {
         }
     }
     else if (argc == 5) {
-        // если чтение из файла и ввод в файл
         if (std::strcmp(argv[1], "--fromfile") == 0 and std::strcmp(argv[3], "--tofile") == 0){
             from_file = argv[2];
             to_file = argv[4];
