@@ -128,6 +128,31 @@ public:
         return ticket;
     }
 };
+int m_c = 11;
+int y_c = 2011;
+int d_c = 22;
+std::string s_c = "woman";
+class GenOfTicket {
+    public:
+    GenOfTicket(){};
+    University* generate(std::string);
+};
+University* GenOfTicket::generate(std::string name)
+{
+    if (name == "MIEM")
+    {
+        MIEM* univer = new MIEM(s_c,y_c,m_c,d_c);
+        return univer;
+    }
+    else
+    {
+        MGTU* univer = new MGTU(s_c,y_c,m_c,d_c);
+        return univer;
+    }
+}
+
+
+
 void FromMenu(){
     std::cout << "To output from a file, enter: ./prog --fromfile <name.txt>" << std::endl;
 }
