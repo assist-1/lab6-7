@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <random>
 #include <chrono>
@@ -207,6 +208,8 @@ void CheckDate() {
 	}
 }
 
+
+
 void CompletionToConsole(std::string group[], int num_tickets) {
 	std::cout << "\nRESULT:\n" << std::endl;
 	for(int i = 0; i < num_tickets; i++) {
@@ -214,7 +217,13 @@ void CompletionToConsole(std::string group[], int num_tickets) {
 	}
 }
 
-
+void CompletionToFile(std::string group[], int num_tickets, const char * nametofile) {
+	std::ofstream ToFile(nametofile);
+	ToFile << "RESULT:\n" << std::endl;
+	for(int i = 0; i < num_tickets; i++) {
+		ToFile << i + 1 << ") " << group[i] << std::endl;
+	}
+}
 
 void GetResultFromConsole() {
 	std::cout << "Enter the number of pass tickets: ";
@@ -277,10 +286,20 @@ void GetResultFromConsole(const char * nametofile, bool is_name_file) {
 	}
 
 	if(is_name_file) {
-
+		std::ifstream check(nametofile);
+		if(check.is_open()) {
+			check.close();
+			CompletionToFile(group, num_tickets, nametofile);
+			std::cout << "\nCOMMAND COMPLETED, CHECK THE FILE " << nametofile << std::endl; 
+		}
+		else {
+			check.close();
+			std::cerr << "ERROR: output file nor found, You must create it or enter right!" << std::endl;
+			exit(1);
+		}
 	}
 	else {
-
+		CompletionToFile(group[], num_tickets, nametofile);
 	}
 }
 
@@ -288,6 +307,18 @@ void GetResultFromConsole(const char * nametofile, bool is_name_file) {
 
 
 void Help() {
-	std::cout << "HELP" << std::endl;
+	std::cout << "\n";
+	std::cout << "##########################################################_INSTRUCTION_#################################################################" << std::endl;
+	std::cout << "You must enter:  [./<program_name>] [*] "                                                                                                 << std::endl;
+	std::cout << "----------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+	std::cout << "Instead of the [*], You must enter the following options:"                                                                                << std::endl;
+	std::cout << "  1) --help ........................................(output of instructions for working with the program)"                                << std::endl;
+	std::cout << "  2) --default .....................................(console input and console output)"                                                   << std::endl;
+	std::cout << "  3) --tofile ......................................(console input and default file 'DefaultFile.txt' output)"                            << std::endl;
+	std::cout << "  4) --tofile <filename> ...........................(console input and user-selected file output)"                                        << std::endl;
+	std::cout << "  5) --fromfile <filename> .........................(user-selected file input and console output)"                                        << std::endl;
+	std::cout << "  6) --fromfile <filename> --tofile ................(user-selected file input and default file 'DefaultFile.txt' output)"                 << std::endl;
+	std::cout << "  7) --fromfile <filename1> --tofile <filename2> ...(user-selected file input and user-selected file output, neccesary different files!)" << std::endl;
+	std::cout << "########################################################################################################################################" << std::endl;
+	std::cout << "\n";
 }
-
