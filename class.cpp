@@ -127,31 +127,37 @@ public:
         return ticket;
     }
 };
-int m_c = 11;
-int y_c = 2011;
-int d_c = 22;
-std::string s_c = "woman";
+std::string u_c;
+int y_c;
+int m_c;
+int d_c;
+std::string s_c;
 class GenOfTicket {
     public:
     GenOfTicket(){};
-    University* generate(std::string);
+    University* generate(std::string,std::string,int,int,int);
 };
-University* GenOfTicket::generate(std::string name)
+University* GenOfTicket::generate(std::string name,std::string sex,int year,int month,int day)
 {
     if (name == "MIEM")
     {
-        MIEM* univer = new MIEM(s_c,y_c,m_c,d_c);
+        MIEM* univer = new MIEM(sex,year,month,day);
         return univer;
     }
     else
     {
-        MGTU* univer = new MGTU(s_c,y_c,m_c,d_c);
+        MGTU* univer = new MGTU(sex,year,month,day);
         return univer;
     }
 }
-
-
-
+std::string gen_ticket()
+{
+    GenOfTicket tick_gener;
+    std::string ticket;
+    if (s_c == "man") ticket = tick_gener.generate(u_c,"man",y_c,m_c,d_c)->generator();
+    else ticket = tick_gener.generate(u_c,"woman",y_c,m_c,d_c)->generator();
+    return ticket;
+}
 void FromMenu(){
     std::cout << "To output from a file, enter: ./prog --fromfile <name.txt>" << std::endl;
 }
