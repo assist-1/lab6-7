@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     int sex;
     if (flags[0]) input >> sex;
     else {
-        std::cout << "Enter your sex (0 for men, 1 for women): ";
+        std::cout << "Enter your sex (0 for women, 1 for men): ";
         std::cin >> sex;
     }
     if (sex != 0 && sex != 1) {

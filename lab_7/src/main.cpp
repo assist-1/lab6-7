@@ -42,14 +42,14 @@ class Miem : public template_pattern_student_number_generator {
         if (sex == 1) return 8;
         }
 
-        int get_random_number() {
-            srand(time(NULL));
+        int get_random_number(int year, int month, int day) {
+            srand(std::stoi(std::to_string(year) + zfill(std::to_string(month), 2) + zfill(std::to_string(day), 2)));
             int num = rand() % 100000;
             return num;
         }
 
         std::string get_c(int newsex, int year, int month, int day) {
-            int random_number = get_random_number();
+            int random_number = get_random_number(year, month, day);
             int c = sex + 2 * (year / 1000) + 3 *  ((year / 100) % 10) + 4 * ((year / 10) % 10) + 5 * (year % 10)
                     + 6 * (month / 10) + 7 * (month % 10) + 8 * (day / 10) + 9 * (day % 10)
                     + 10 * (random_number / 10000) + 11 * ((random_number / 1000) % 10) + 12 * ((random_number / 100) % 10)
@@ -70,14 +70,14 @@ class Mgtu : public template_pattern_student_number_generator {
         if (sex == 1) return 2;
         }
 
-        int get_random_number() {
-            srand(time(NULL));
+        int get_random_number(int year, int month, int day) {
+            srand(std::stoi(std::to_string(year) + zfill(std::to_string(month), 2) + zfill(std::to_string(day), 2)));
             int num = rand() % 10000;
             return num;
         }
 
         std::string get_c(int newsex, int year, int month, int day) {
-            int random_number = get_random_number();
+            int random_number = get_random_number(year, month, day);
             int c = sex + 2 * (year / 1000) + 3 *  ((year / 100) % 10) + 4 * ((year / 10) % 10) + 5 * (year % 10)
                     + 6 * (month / 10) + 7 * (month % 10) + 8 * (day / 10) + 9 * (day % 10)
                     + 10 * ((random_number / 1000) % 10) + 11 * ((random_number / 100) % 10)

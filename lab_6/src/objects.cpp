@@ -1,16 +1,16 @@
 #include <string>
 #include <iostream>
 
-int GetRandomNumber(int min, int max)
-{
-  srand(time(NULL));
-  int num = min + rand() % (max - min + 1);
-  return num;
-}
-
 std::string zfill(std::string str, int n) {
     std::string zeros(n - str.length(), '0');
     return zeros + str;
+}
+
+int get_random_number(int max, int year, int month, int day)
+{
+  srand(std::stoi(std::to_string(year) + zfill(std::to_string(month), 2) + zfill(std::to_string(day), 2)));
+  int num = rand() % max;
+  return num;
 }
 
 class StudentID
@@ -56,7 +56,7 @@ class Miem : virtual StudentID
         personal_number += std::to_string(year);
         personal_number += zfill(std::to_string(month), 2);
         personal_number += zfill(std::to_string(day), 2);
-        int random_number = GetRandomNumber(0, 99999);
+        int random_number = get_random_number(100000, year, month, day);
         personal_number += zfill(std::to_string(random_number), 5);
         int c = get_c(newsex, year, month, day, random_number);
         personal_number += std::to_string(c);
@@ -98,7 +98,7 @@ class Mgtu : virtual StudentID
         personal_number += std::to_string(year);
         personal_number += zfill(std::to_string(month), 2);
         personal_number += zfill(std::to_string(day), 2);
-        int random_number = GetRandomNumber(0, 9999);
+        int random_number = get_random_number(10000, year, month, day);
         personal_number += zfill(std::to_string(random_number), 4);
         int c = get_c(newsex, year, month, day, random_number);
         personal_number += std::to_string(c);
