@@ -21,7 +21,7 @@ public:
 		this->month = month;
 		this->day   = day;
 	}
-	std::string pass_generate() override;
+	std::string pass_generate() override final;
 };
 
 class PASS_MGTU : public PassTicket {
@@ -32,10 +32,11 @@ public:
 		this->month = month;
 		this->day = day;
 	}
-	std::string pass_generate() override;
+	std::string pass_generate() override final;
 };
 
-
+void Help();
 void GetResultFromConsole();
+void GetResultFromConsole(const char * nametogile, bool is_name_file);
 
 #endif

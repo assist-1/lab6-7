@@ -2,10 +2,12 @@
 #include <string>
 #include <random>
 #include <chrono>
+#include <set>
 #include "classes.h"
-std::string stream;	
-std::string name_univ;
+
+std::string stream, name_univ, s_sex, s_year, s_month, s_day;
 int sex, year, month, day;
+
 std::string PASS_MIEM::pass_generate() {
     int date = year * 10000 + month * 100 + day;
     passticket += std::to_string(sex) + std::to_string(date);
@@ -30,7 +32,6 @@ std::string PASS_MIEM::pass_generate() {
     }
     return passticket;
 }
-
 std::string PASS_MGTU::pass_generate() {
 	int date = year * 10000 + month * 100 + day;
 	passticket += std::to_string(sex) + std::to_string(date);
@@ -56,18 +57,13 @@ std::string PASS_MGTU::pass_generate() {
     }
     return passticket;
 }
-
-std::string GetPassTicket(PassTicket &University) {
-	return University.pass_generate();
-}
-
+std::string GetPassTicket(PassTicket &University) { return University.pass_generate(); }
 bool IsDigit(char symbol) {
 	if(symbol >= '0' && symbol <= '9') return true;
 	return false;
 }
-
-bool IsUniversityName(std::string name) {
-	if(name == "MIEM" || name == "MGTU") return true;
+bool IsUniversityName() {
+	if(name_univ == "MIEM" || name_univ == "MGTU") return true;
 	return false;
 }
 
@@ -97,32 +93,12 @@ int GetNumberOfTickets() {
 		exit(1);
 	}
 }
-std::string GetUniversityName() {
-	std::string result;
-	if(stream.size()) {
-		if(!IsUniversityName(stream)) {
-			std::cerr << "ERROR: wrong University name!" << std::endl;
-			exit(1);
-		}
-		else {
-			result = stream;
-			stream = "";
-			return result;
-		}
-	}
-	else {
-		std::cerr << "ERROR: University name not entered!" << std::endl;
-		exit(1);
-	}
-}
 int GetSex() {
-	if(stream.size()) {
-		if(stream == "men") {
-			stream = "";
+	if(s_sex.size()) {
+		if(s_sex == "man") {
 			return 1;
 		}
-		else if(stream == "women") {
-			stream = "";
+		else if(s_sex == "woman") {
 			return 0;
 		}
 		else {
@@ -137,14 +113,14 @@ int GetSex() {
 }
 int GetYear() {
 	int result = 0;
-	if(stream.size()) {
-		for(int i = 0; i < stream.size(); i++) {
-			if(!IsDigit(stream[i])) {
+	if(s_year.size()) {
+		for(int i = 0; i < s_year.size(); i++) {
+			if(!IsDigit(s_year[i])) {
 				std::cerr << "ERROR: invalid symbols in year of birth!" << std::endl;
 				exit(1);
 			}
 			else {
-				result = result * 10 + (stream[i] - '0');
+				result = result * 10 + (s_year[i] - '0');
 			}
 		}
 	}
@@ -153,7 +129,6 @@ int GetYear() {
 		exit(1);
 	}
 	if(result >= 1900 && result <= 2005) {
-		stream = "";
 		return result;
 	}
 	else {
@@ -163,14 +138,14 @@ int GetYear() {
 }
 int GetMonth() {
 	int result = 0;
-	if(stream.size()) {
-		for(int i = 0; i < stream.size(); i++) {
-			if(!IsDigit(stream[i])) {
+	if(s_month.size()) {
+		for(int i = 0; i < s_month.size(); i++) {
+			if(!IsDigit(s_month[i])) {
 				std::cerr << "ERROR: invalid symbols in month of birth!" << std::endl;
 				exit(1);
 			}
 			else {
-				result = result * 10 + (stream[i] - '0');
+				result = result * 10 + (s_month[i] - '0');
 			}
 		}
 	}
@@ -179,7 +154,6 @@ int GetMonth() {
 		exit(1);
 	}
 	if(result >= 1 && result <= 12) {
-		stream = "";
 		return result;
 	}
 	else {
@@ -189,14 +163,14 @@ int GetMonth() {
 }
 int GetDay() {
 	int result = 0;
-	if(stream.size()) {
-		for(int i = 0; i < stream.size(); i++) {
-			if(!IsDigit(stream[i])) {
+	if(s_day.size()) {
+		for(int i = 0; i < s_day.size(); i++) {
+			if(!IsDigit(s_day[i])) {
 				std::cout << "ERROR: invalid symbols in day of birth!" << std::endl;
 				exit(1);
 			}
 			else {
-				result = result * 10 + (stream[i] - '0');
+				result = result * 10 + (s_day[i] - '0');
 			}
 		}
 	}
@@ -205,7 +179,6 @@ int GetDay() {
 		exit(1);
 	}
 	if(result >= 1 && result <= 31) {
-		stream = "";
 		return result;
 	}
 	else {
@@ -214,64 +187,102 @@ int GetDay() {
 	}
 }
 void FillFields() {
-	std::cout << ") Enter the University name: ";
-	std::cin >> stream;
-	std::cout << "\n";
-	name_univ = GetUniversityName();
-	std::cout << "  Enter the sex: ";
-	std::cin >> stream;
-	std::cout << "\n";
+	std::cin >> name_univ >> s_sex >> s_year >> s_month >> s_day;
+	if(!IsUniversityName()) {
+		std::cerr << "ERROR: wrong University name!" << std::endl;
+		exit(1);
+	}
 	sex = GetSex();
-	std::cout << "  Enter the year of birth: ";
-	std::cin  >> stream;
-	std::cout << "\n";
 	year = GetYear();
-	std::cout << "  Enter the month of birth: ";
-	std::cin >> stream;
-	std::cout << "\n";
 	month = GetMonth();
-	std::cout << "  Enter the day of birth: ";
-	std::cin >> stream;
-	std::cout << "\n";
 	day = GetDay();
 }
+void CheckDate() {
+	int calendar[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	if(!(year % 4))
+		calendar[1] = 29;
+	if(day > calendar[month - 1] || day < 1) {
+		std::cerr << "ERROR: day in this month and year must be in range 1 to " << calendar[month - 1] << std::endl;
+		exit(1);
+	}
+}
+
+
 void GetResultFromConsole() {
 	std::cout << "Enter the number of pass tickets: ";
 	std::cin >> stream;
 	std::cout << "\n";
 	int num_tickets = GetNumberOfTickets();
+	std::string group[num_tickets];
+	std::set <std::string> unique;
 	for(int i = 0; i < num_tickets; i++) {
-		std::cout << i+1;
+		std::cout << i+1 << ") ";
 		FillFields();
+		CheckDate();
 		if(name_univ == "MIEM") {
 			PASS_MIEM person(sex, year, month, day);
-			std::cout << person.pass_generate() << std::endl;
+			std::string temp = GetPassTicket(person);
+			while(unique.find(temp) != unique.end())
+				temp = GetPassTicket(person);
+			group[i] = temp;
+			unique.insert(temp);
+		}
+		else if(name_univ == "MGTU") {
+			PASS_MGTU person(sex, year, month, day);
+			std::string temp = GetPassTicket(person);
+			while(unique.find(temp) != unique.end())
+				temp = GetPassTicket(person);
+			group[i] = temp;
+			unique.insert(temp);
+		}
+	}
+	std::cout << "\nRESULT:\n" << std::endl;
+	for(int i = 0; i < num_tickets; i++) {
+		std::cout << i + 1 << ") " << group[i] << std::endl;
+	}
+}
+
+void GetResultFromConsole(const char * nametofile, bool is_name_file) {
+	std::cout << "Enter the number of pass tickets: ";
+	std::cin >> stream;
+	std::cout << "\n";
+	int num_tickets = GetNumberOfTickets();
+	std::string group[num_tickets];
+	std::set <std::string> unique;
+	for(int i = 0; i < num_tickets; i++) {
+		std::cout << i+1 << ") ";
+		FillFields();
+		CheckDate();
+		if(name_univ == "MIEM") {
+			PASS_MIEM person(sex, year, month, day);
+			std::string temp = GetPassTicket(person);
+			while(unique.find(temp) != unique.end())
+				temp = GetPassTicket(person);
+			group[i] = temp;
+			unique.insert(temp);
+		}
+		else if(name_univ == "MGTU") {
+			PASS_MGTU person(sex, year, month, day);
+			std::string temp = GetPassTicket(person);
+			while(unique.find(temp) != unique.end())
+				temp = GetPassTicket(person);
+			group[i] = temp;
+			unique.insert(temp);
 		}
 	}
 
+	if(is_name_file) {
+
+	}
+	else {
+
+	}
 }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void Help() {
-
+	std::cout << "HELP" << std::endl;
 }
 
