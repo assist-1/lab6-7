@@ -3,23 +3,22 @@
 #include<string>
 #include <ctime> 
 #include<random>
-std::string uni,sex, day, month, year;
 class Student_id{
     protected:
-    std::string sex;
+    std::string sexx;
     int date;
     std::string number;
     std::string id;
     public:
     virtual std::string set_sex(std::string)=0;
     virtual std::string set_number(int)=0;
-    virtual std::string set_id()=0;
+    virtual std::string set_id(std::string sex, int y, int m, int d)=0;
 };
 class MIEM: public Student_id{
     public:
     std::string set_sex(std::string s) override{
-        s=="man"?sex="8":sex="4";
-        return sex;
+        s=="man"?sexx="8":sexx="4";
+        return sexx;
     }
     std::string set_number(int d)override{
         std::mt19937 gen(d + time(0)); 
@@ -29,8 +28,10 @@ class MIEM: public Student_id{
         return number;
 
     }
-    std::string set_id()override{
-        id=sex+std::to_string(date)+number;
+    std::string set_id(std::string sex1, int y, int m, int d)override{
+        set_sex(sex1);
+        set_number(y);
+        id=sexx+std::to_string(y)+std::to_string(m)+std::to_string(d)+number;
         int sum=0;
         for(int i=0;i<id.length();i++){
             sum+=(id[i]-'0')*(i+1);
@@ -55,8 +56,8 @@ class MIEM: public Student_id{
 class MGTUU: public Student_id{
     public:
     std::string set_sex(std::string s) override{
-        s=="man"?sex="1":sex="2";
-        return sex;
+        s=="man"?sexx="1":sexx="2";
+        return sexx;
     }
     std::string set_number(int d)override{
         std::mt19937 gen(d + time(0)); 
@@ -66,8 +67,10 @@ class MGTUU: public Student_id{
         return number;
 
     }
-    std::string set_id()override{
-        id=sex+std::to_string(date)+number;
+   std::string set_id(std::string sex1, int y, int m, int d)override{
+        set_sex(sex1);
+        set_number(y);
+        id=sexx+std::to_string(y)+std::to_string(m)+std::to_string(d)+number;
         int sum=0;
         for(int i=0;i<id.length();i++){
             sum+=(id[i]-'0')*(i+1);
@@ -88,8 +91,24 @@ class MGTUU: public Student_id{
         return id;
     }
 
+
+};
+class TemplateGenerator { 
+    public: 
+        Student_id* templateGenerator(std::string name) { 
+            if (name == "MIEM") { 
+                MIEM* miem_id = new MIEM; 
+                return miem_id; 
+            } else if (name == "MGTUU") { 
+                MGTUU* mgtuu_id = new MGTUU; 
+                return mgtuu_id; 
+            } 
+            exit(1); 
+        } 
 };
 int main(int argc, char **argv){
+    std::string uni,sex;
+    int day, month, year;
     FILE *fp;
     bool tofile=false;
     bool fromfile=false;
@@ -152,25 +171,19 @@ int main(int argc, char **argv){
         }
         std::cout<<"Enter your day of birth\n";
         std::cin>>day;
-        int d;
-        d=std::stoi(day);
-        if(d<0 || d>31){
+        if(day<0 || day>31){
             std::cout<<"Wrong day\n";
             return EXIT_FAILURE;
         } 
         std::cout<<"Enter your month of birth\n";
         std::cin>>month;
-        int m;
-        m=std::stoi(month);
-         if(m<0 || m>12){
+         if(month<0 || month>12){
             std::cout<<"Wrong month\n";
             return EXIT_FAILURE;
         } 
         std::cout<<"Enter your year of birth\n";
         std::cin>>year;
-        int y;
-        y=std::stoi(year);
-         if(y<1900 || y>2022){
+         if(year<1900 || year>2022){
             std::cout<<"Wrong year\n";
             return EXIT_FAILURE;
         } 
@@ -178,21 +191,9 @@ int main(int argc, char **argv){
             std::ofstream out;
             out.open("test.txt");
             if(out.is_open()){
-                std::string str=year+month+day+'\0';
-                int date = std::stoi(str);
-                if (uni=="MIEM"){
-                MIEM p;
-                p.set_sex(sex);
-                p.set_number(date);
-                out<<p.set_id();
-                }
-                else{
-                  MGTUU p;
-                p.set_sex(sex);
-                p.set_number(date);
-                out<<p.set_id();  
-                }
-
+                TemplateGenerator gen;
+                std::string ticket=gen.templateGenerator(uni)->set_id(sex,year,month,day);
+                out<<ticket<<'\n';              
             }
                         
             out.close();
@@ -202,20 +203,9 @@ int main(int argc, char **argv){
             std::fstream output(name1);
             fp=fopen(name1,"w");
             if(output.is_open()){
-                std::string str=year+month+day+'\0';
-                int date = std::stoi(str);
-                 if (uni=="MIEM"){
-                MIEM p;
-                p.set_sex(sex);
-                p.set_number(date);
-                output<<p.set_id();
-                }
-                else{
-                  MGTUU p;
-                p.set_sex(sex);
-                p.set_number(date);
-                output<<p.set_id();  
-                }                     
+                TemplateGenerator gen;
+                std::string ticket=gen.templateGenerator(uni)->set_id(sex,year,month,day);
+                output<<ticket<<'\n'; 
             }
             output.close();
             std::cout<<"Answer in file: "<<name1<<std::endl;
@@ -226,21 +216,10 @@ int main(int argc, char **argv){
         std::fstream input(name2);
         fp=fopen(name2,"r");
         input>>uni>>year>>month>>day;
-        std::string str=year+month+day+'\0';
-        int date = std::stoi(str);
 
-        if (uni=="MIEM"){
-            MIEM p;
-            p.set_sex(sex);
-            p.set_number(date);
-            std::cout<<p.set_id();
-        }
-        else{
-            MGTUU p;
-            p.set_sex(sex);
-            p.set_number(date);
-            std::cout<<p.set_id();  
-        }                  
+       TemplateGenerator gen;
+        std::string ticket=gen.templateGenerator(uni)->set_id(sex,year,month,day);
+        std::cout<<ticket<<'\n';  
             
     }
     if(fromfile && tofile){
@@ -251,20 +230,9 @@ int main(int argc, char **argv){
             fp=fopen(name2,"r");
             input>>uni>>year>>month>>day;
             if(out.is_open()){
-                std::string str=year+month+day+'\0';
-                int date = std::stoi(str);
-                if (uni=="MIEM"){
-                MIEM p;
-                p.set_sex(sex);
-                p.set_number(date);
-                out<<p.set_id();
-                }
-                else{
-                  MGTUU p;
-                p.set_sex(sex);
-                p.set_number(date);
-                out<<p.set_id();  
-                }
+               TemplateGenerator gen;
+                std::string ticket=gen.templateGenerator(uni)->set_id(sex,year,month,day);
+                out<<ticket<<'\n'; 
 
             }
                         
@@ -278,20 +246,9 @@ int main(int argc, char **argv){
              std::fstream output(name1);
             fp=fopen(name1,"w");
             if(output.is_open()){
-                std::string str=year+month+day+'\0';
-                int date = std::stoi(str);
-                 if (uni=="MIEM"){
-                MIEM p;
-                p.set_sex(sex);
-                p.set_number(date);
-                output<<p.set_id();
-                }
-                else{
-                  MGTUU p;
-                p.set_sex(sex);
-                p.set_number(date);
-                output<<p.set_id();  
-                }                     
+               TemplateGenerator gen;
+                std::string ticket=gen.templateGenerator(uni)->set_id(sex,year,month,day);
+                output<<ticket<<'\n';   
             }
             output.close();
             std::cout<<"Answer in file: "<<name1<<std::endl;
