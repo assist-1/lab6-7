@@ -33,7 +33,7 @@ class Miem :public uni {
         } 
         else if(sex == 1) { 
             s += std::to_string(4); 
-            sm += 4; 
+    
         } 
         else{
             std::cout<<"wrong args";
