@@ -4,7 +4,6 @@
 #include <random>
 #include <fstream>
 #include <cstring>
-#include <algorithm>
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -118,7 +117,7 @@ public:
         int ost = sum / div;
         for (int i = 0; i < 10;i++)
         {
-            if ((ost + (15*i)%10)%10 == 0)
+            if ((ost + (15*i)%11)%11 == 0)
             {
                 ost = 0;
                 ticket+=std::to_string(i);
@@ -168,11 +167,7 @@ void Menu(){
     ToMenu();
     FromToMenu();
 }
-bool IsDigit(char token)
-{
-    if (token >= '0' && token <= '9') return true;
-    else return false;
-}
+
 void CheckDate(int year,int month,int day)
 {
     int arr[] = {31,29,31,30,31,30,31,31,30,31,30,31};
