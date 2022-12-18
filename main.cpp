@@ -23,9 +23,27 @@ int main(int argc, char ** argv) {
 		}
 	}
 	else if(argc == 3) {
-		if(!strcmp())
+		if(!strcmp(argv[1],flags[2]))
+			GetResultFromConsole(argv[2], true);
+		else if(!strcmp(argv[1], flags[3]))
+			GetResultFromFile(argv[2]);
+		else {
+			std::cerr << "ERROR: invalid input!" << std::endl;
+			exit(1);
+		}
 	}
+	else if(argc == 4) {
+		if(!strcmp(argv[1], flags[3]) && !strcmp(argv[3], flags[2])) {
+			
+		}
+	}
+	else if(argc == 5) {
 
+	}
+	else {
+		std::cerr << "ERROR: invalid input!" << std::endl;
+		exit(1);
+	}
 
 
 

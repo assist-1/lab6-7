@@ -187,10 +187,21 @@ int GetDay() {
 		exit(1);
 	}
 }
-void FillFields() {
+void FillFieldsConsole() {
 	std::cin >> name_univ >> s_sex >> s_year >> s_month >> s_day;
 	if(!IsUniversityName()) {
 		std::cerr << "ERROR: wrong University name!" << std::endl;
+		exit(1);
+	}
+	sex = GetSex();
+	year = GetYear();
+	month = GetMonth();
+	day = GetDay();
+}
+void FillFieldsFile(std::ifstream &FromFile) {
+	FromFile >> name_univ >> s_sex >> s_year >> s_month >> s_day;
+	if(!IsUniversityName()) {
+		std::cerr < "ERROR: wrong University name!" << std::endl;
 		exit(1);
 	}
 	sex = GetSex();
@@ -234,7 +245,7 @@ void GetResultFromConsole() {
 	std::set <std::string> unique;
 	for(int i = 0; i < num_tickets; i++) {
 		std::cout << i+1 << ") ";
-		FillFields();
+		FillFieldsConsole();
 		CheckDate();
 		if(name_univ == "MIEM") {
 			PASS_MIEM person(sex, year, month, day);
@@ -265,7 +276,7 @@ void GetResultFromConsole(const char * nametofile, bool is_name_file) {
 	std::set <std::string> unique;
 	for(int i = 0; i < num_tickets; i++) {
 		std::cout << i+1 << ") ";
-		FillFields();
+		FillFieldsConsole();
 		CheckDate();
 		if(name_univ == "MIEM") {
 			PASS_MIEM person(sex, year, month, day);
@@ -303,8 +314,86 @@ void GetResultFromConsole(const char * nametofile, bool is_name_file) {
 	}
 }
 
+void GetResultFromFile(const char * namefromfile) {
+	std::ifstream FromFile(namefromfile);
+	if(FromFile.is_open()) {
+		int counter = 0;
+		std::set <std::string> unique;
+		while(!FromFile.eof()) {
+			counter++;
+			FillFieldsFile(FromFile);
+			CheckDate();
+			if(name_univ  == "MIEM") {
+				PASS_MIEM person(sex, year, month, day);
+				std::string temp = GetPassTicket(person);
+				while(unique.find(temp) != unique.end())
+					temp = GetPassTicket(person);
+				unique.insert(temp);
+				std::cout << counter << ") " << temp << std::endl;
+			}
+			else if(name_univ == "MGTU") {
+				PASS_MGTU person(sex, year, month, day);
+				std::string temp = GetPassTicket(person);
+				while(unique.find(temp) != unique.end())
+					temp = GetPassTicket(person);
+				unique.insert(temp);
+				std::cout << counter << ") " << temp << std::endl;
+			}
+		}
+	}
+	else {
+		FromFile.close();
+		std::cerr << "ERROR: input file not found, You must create it or enter right!" << std::endl;
+		exit(1);
+	}
+}
 
+void GetResultFromFile(const char * namefromfile, const char * nametofile, bool is_name_file) {
+	std::ifstream FromFile(namefromfile);
+	if(FromFile.is_open()) {
+		if(is_name_file) {
+			std::ifstream check(nametofile);
+			if(check.is_open()) {
+				
+			}
+			else {
+				std::cerr << "ERROR: output file not found, You must create it or enter right!" << std::endl;
+				exit(1);
+ 			}
 
+		}
+		else {
+			std::ofstream ToFile(nametofile);
+			int counter = 0;
+			std::set <std::string> unique;
+			while(!FromFile.eof()) {
+				FillFieldsFile(FromFile);
+				CheckDate();
+				if(name_univ == "MIEM") {
+					PASS_MIEM person(sex, year, month, day);
+					std::string temp = GetPassTicket(person);
+					while(unique.find(temp) != unique.end())
+						temp = GetPassTicket(person);
+					unique.insert(temp);
+					ToFile << ++counter << ") " << temp << std::endl;
+				}
+				else if(name_univ == "MGTU") {
+					PASS_MGTU person(sex, year, month, day);
+					std::string temp = GetPassTicket(person);
+					while(unique.find(temp) != unique.end())
+						temp = GetPassTicket(person);
+					unique.insert(temp);
+					ToFile << ++counter << ") " << temp << std::endl;
+				}
+			}
+		}
+	}
+	else {
+		FromFile.close();
+		std::cerr << "ERROR: input file not found, You must create it or enter right!" << std::endl;
+		exit(1);
+	}
+}
 
 void Help() {
 	std::cout << "\n";

@@ -37,6 +37,7 @@ public:
 
 void Help();
 void GetResultFromConsole();
-void GetResultFromConsole(const char * nametogile, bool is_name_file);
-
+void GetResultFromConsole(const char * nametofile, bool is_name_file);
+void GetResultFromFile(const char * namefromfile);
+void GetResultFromFile(const char * namefromfile, const char * nametofile, bool is_name_file);
 #endif
