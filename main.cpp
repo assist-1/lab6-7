@@ -16,18 +16,26 @@ using std::to_string;
 
 const char* flag[2] = { "--tofile", "--fromfile" };
 
-class template_pattern_student_number_generator {
+class stud_card {
+public:
+    virtual void gender(string sex1) = 0;
+    virtual void c_in_numbers() = 0;
+    virtual void date(int year1, int month1, int day1) = 0;
+};
+
+class MIEM : virtual public stud_card {
 public:
     string sex, year, month, day, number, c, res = "";
-    virtual string generate(string sex1, int year1, int month1, int day1) final {
-        gender(sex1);
-        date(year1, month1, day1);
-        c_in_numbers();
-        en();
+    MIEM() {}; //default constructor
+    void gender(string sex1) override {
+        if (sex1 == "man") {
+            res += "8";
+        }
+        else if (sex1 == "woman") {
+            res += "4";
+        }
     }
-    virtual void gender(string sex1) {};
-    virtual void c_in_numbers() {};
-    virtual void date(int year1, int month1, int day1) {
+    void date(int year1, int month1, int day1) override {
         year = to_string(year1);
         res += year;
         if (month1 > 0 && month1 <= 12) {
@@ -40,22 +48,6 @@ public:
         if (day1 >= 10 && day1 <= 31) { day = to_string(day1); }
         else if (day1 < 10 && day1 > 0) { day = "0" + to_string(day1); }
         res += day;
-    }
-    virtual string en() final {
-        return res;
-    }
-};
-
-class MIEM : public template_pattern_student_number_generator {
-public:
-    MIEM() {}; //default constructor
-    void gender(string sex1) override {
-        if (sex1 == "man") {
-            res += "8";
-        }
-        else if (sex1 == "woman") {
-            res += "4";
-        }
     }
     void c_in_numbers() override {
         int sum = 0;
@@ -78,8 +70,9 @@ public:
 };
 
 
-class MGTUU : public  template_pattern_student_number_generator {
+class MGTUU : virtual public stud_card {
 public:
+    string sex, year, month, day, number, c, res = "";
     MGTUU() {}; //default constructor
     void gender(string sex1) override {
         if (sex1 == "man") {
@@ -88,6 +81,20 @@ public:
         else if (sex1 == "woman") {
             res += "1";
         }
+    }
+    void date(int year1, int month1, int day1) override {
+        year = to_string(year1);
+        res += year;
+        if (month1 > 0 && month1 <= 12) {
+            if (month1 >= 10) { month = to_string(month1); }
+            else {
+                month = "0" + to_string(month1);
+            }
+            res += month;
+        }
+        if (day1 >= 10 && day1 <= 31) { day = to_string(day1); }
+        else if (day1 < 10 && day1 > 0) { day = "0" + to_string(day1); }
+        res += day;
     }
     void c_in_numbers() override {
         int sum = 0;
@@ -109,25 +116,10 @@ public:
     ~MGTUU() {}; //destructor
 };
 
-class pointer {
-public:
-    template_pattern_student_number_generator* generator(string university1) {
-        if (university1 == "MIEM") {
-            MIEM* S1 = new MIEM;
-            return S1;
-        }
-        else if (university1 == "MGTUU")
-        {
-            MGTUU* S2 = new MGTUU;
-            return S2;
-        }
-        return 0;
-    }
-};
 
 int main(int argc, char** argv) {
     int yearstud, monthstud, daystud;
-    string universitystud, sexstud;
+    string sexstud;
     if (argc == 1) {
         cerr << "Error: there are no flags" << endl;
     }
@@ -139,13 +131,20 @@ int main(int argc, char** argv) {
         if (!(strcmp(argv[1], flag[0]))) {
             ofstream fout;
             fout.open(name);
-            cin >> universitystud >> sexstud >> yearstud >> monthstud >> daystud;
+            cin >> sexstud >> yearstud >> monthstud >> daystud;
             if (checkdata(yearstud, monthstud, daystud)) {
-                pointer templateGenerator;
-                string SB_1 = templateGenerator.generator(universitystud)->generate(sexstud, yearstud, monthstud, daystud);
-                fout << universitystud;
-                fout << ' ';
-                fout << SB_1;
+                MIEM stud1;
+                stud1.gender(sexstud);
+                stud1.date(yearstud, monthstud, daystud);
+                stud1.c_in_numbers();
+                MGTUU stud2;
+                stud2.gender(sexstud);
+                stud2.date(yearstud, monthstud, daystud);
+                stud2.c_in_numbers();
+                fout << stud1.res;
+                fout << '\n';
+                fout << stud2.res;
+                fout << '\n';
                 fout.close();
             }
             else { cerr << "Problems with date" << endl; }
@@ -153,16 +152,23 @@ int main(int argc, char** argv) {
         else if (!strcmp(argv[1], flag[1])) {
             ifstream fin;
             fin.open(name);
-            fin >> universitystud >> sexstud >> yearstud >> monthstud >> daystud;
+            fin >> sexstud >> yearstud >> monthstud >> daystud;
             if (checkdata(yearstud, monthstud, daystud)) {
-                pointer templateGenerator;
-                string SB_1 = templateGenerator.generator(universitystud)->generate(sexstud, yearstud, monthstud, daystud);
-                cout << universitystud;
-                cout << ' ';
-                cout << SB_1;
-                fin.close();
+                MIEM stud1;
+                stud1.gender(sexstud);
+                stud1.date(yearstud, monthstud, daystud);
+                stud1.c_in_numbers();
+                MGTUU stud2;
+                stud2.gender(sexstud);
+                stud2.date(yearstud, monthstud, daystud);
+                stud2.c_in_numbers();
+                cout << stud1.res;
+                cout << '\n';
+                cout << stud2.res;
+                cout << '\n';
             }
             else { cerr << "Problems with date" << endl; }
+
         }
         else cerr << "Wrong flags" << endl;
     }
@@ -174,14 +180,21 @@ int main(int argc, char** argv) {
                 ifstream fin;
                 ofstream fout;
                 fin.open(name1);
-                fin >> universitystud >> sexstud >> yearstud >> monthstud >> daystud;
+                fin >> sexstud >> yearstud >> monthstud >> daystud;
                 if (checkdata(yearstud, monthstud, daystud)) {
-                    pointer templateGenerator;
-                    string SB_1 = templateGenerator.generator(universitystud)->generate(sexstud, yearstud, monthstud, daystud);
+                    MIEM stud1;
+                    stud1.gender(sexstud);
+                    stud1.date(yearstud, monthstud, daystud);
+                    stud1.c_in_numbers();
+                    MGTUU stud2;
+                    stud2.gender(sexstud);
+                    stud2.date(yearstud, monthstud, daystud);
+                    stud2.c_in_numbers();
                     fout.open(name2);
-                    fout << universitystud;
-                    fout << ' ';
-                    fout << SB_1;
+                    fout << stud1.res;
+                    fout << '\n';
+                    fout << stud2.res;
+                    fout << '\n';
                     fin.close();
                     fout.close();
                 }
