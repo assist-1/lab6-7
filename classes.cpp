@@ -201,7 +201,7 @@ void FillFieldsConsole() {
 void FillFieldsFile(std::ifstream &FromFile) {
 	FromFile >> name_univ >> s_sex >> s_year >> s_month >> s_day;
 	if(!IsUniversityName()) {
-		std::cerr < "ERROR: wrong University name!" << std::endl;
+		std::cerr << "ERROR: wrong University name!" << std::endl;
 		exit(1);
 	}
 	sex = GetSex();
@@ -310,7 +310,8 @@ void GetResultFromConsole(const char * nametofile, bool is_name_file) {
 		}
 	}
 	else {
-		CompletionToFile(group[], num_tickets, nametofile);
+		CompletionToFile(group, num_tickets, nametofile);
+		std::cout << "\nCOMMAND COMPLETED, CHECK THE FILE " << nametofile << std::endl; 
 	}
 }
 
@@ -354,13 +355,37 @@ void GetResultFromFile(const char * namefromfile, const char * nametofile, bool 
 		if(is_name_file) {
 			std::ifstream check(nametofile);
 			if(check.is_open()) {
-				
+				check.close();
+				std::ofstream ToFile(nametofile);
+				int counter = 0;
+				std::set <std::string> unique;
+				while(!FromFile.eof()) {
+					FillFieldsFile(FromFile);
+					CheckDate();
+					if(name_univ == "MIEM") {
+						PASS_MIEM person(sex, year, month, day);
+						std::string temp = GetPassTicket(person);
+						while(unique.find(temp) != unique.end())
+							temp = GetPassTicket(person);
+						unique.insert(temp);
+						ToFile << ++counter << ") " << temp << std::endl;
+					}
+					else if(name_univ == "MGTU") {
+						PASS_MGTU person(sex, year, month, day);
+						std::string temp = GetPassTicket(person);
+						while(unique.find(temp) != unique.end())
+							temp = GetPassTicket(person);
+						unique.insert(temp);
+						ToFile << ++counter << ") " << temp << std::endl;
+					}
+				}
 			}
 			else {
+				check.close();
+				FromFile.close();
 				std::cerr << "ERROR: output file not found, You must create it or enter right!" << std::endl;
 				exit(1);
- 			}
-
+	 		}
 		}
 		else {
 			std::ofstream ToFile(nametofile);
@@ -386,6 +411,9 @@ void GetResultFromFile(const char * namefromfile, const char * nametofile, bool 
 					ToFile << ++counter << ") " << temp << std::endl;
 				}
 			}
+			ToFile.close();
+			FromFile.close();
+			std::cout << "COMMAND COMPLETED, CHECK THE FILE " << nametofile << std::endl;
 		}
 	}
 	else {
@@ -394,7 +422,6 @@ void GetResultFromFile(const char * namefromfile, const char * nametofile, bool 
 		exit(1);
 	}
 }
-
 void Help() {
 	std::cout << "\n";
 	std::cout << "##########################################################_INSTRUCTION_#################################################################" << std::endl;
