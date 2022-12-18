@@ -200,6 +200,7 @@ int read_file(int flag) {
     std::ifstream file("fromfile.txt"); 
     if (!file.is_open()) { 
         std::cout << "MISTAKE"; 
+        return 0;
     } 
     std::string name; 
     file >> name; 
