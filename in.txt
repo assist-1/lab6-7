@@ -1,0 +1,5 @@
+2
+MIEM
+man 2004 2 19
+MGTUU
+woman 2000 3 21
